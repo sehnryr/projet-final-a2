@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS "note" CASCADE;
 -- Table sport
 CREATE TABLE "sport"(
     "id" SERIAL PRIMARY KEY,
-    "name_id" INTEGER UNIQUE NOT NULL,
+    "name_id" VARCHAR(64) UNIQUE NOT NULL,
     "default_max_players" INTEGER,
     "default_min_players" INTEGER
 );
