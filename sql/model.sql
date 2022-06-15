@@ -12,8 +12,8 @@ DROP TABLE IF EXISTS "city" CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS "user_level" CASCADE;
 DROP TABLE IF EXISTS "match" CASCADE;
-DROP TABLE IF EXISTS "team" CASCADE;
 DROP TABLE IF EXISTS "participation" CASCADE;
+DROP TABLE IF EXISTS "team" CASCADE;
 DROP TABLE IF EXISTS "note" CASCADE;
 
 -- Table sport
@@ -85,6 +85,20 @@ CREATE TABLE "match"(
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+-- Table participation
+CREATE TABLE "participation"(
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INTEGER NOT NULL,
+    "match_id" INTEGER NOT NULL,
+    "validation" BOOLEAN NOT NULL,
+    "score" INTEGER NOT NULL,
+
+		FOREIGN KEY("user_id") REFERENCES "user"("id")
+			ON UPDATE CASCADE ON DELETE CASCADE,
+		FOREIGN KEY("match_id") REFERENCES "match"("id")
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 -- Table team
 CREATE TABLE "team"(
     "id" SERIAL PRIMARY KEY,
@@ -99,20 +113,6 @@ CREATE TABLE "team"(
 );
 COMMENT ON COLUMN "team"."name"
 	IS 'by default : team 1, team 2...';
-
--- Table participation
-CREATE TABLE "participation"(
-    "id" SERIAL PRIMARY KEY,
-    "user_id" INTEGER NOT NULL,
-    "match_id" INTEGER NOT NULL,
-    "validation" BOOLEAN NOT NULL,
-    "score" INTEGER NOT NULL,
-
-		FOREIGN KEY("user_id") REFERENCES "user"("id")
-			ON UPDATE CASCADE ON DELETE CASCADE,
-		FOREIGN KEY("match_id") REFERENCES "match"("id")
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
 
 -- Table note
 CREATE TABLE "note"(
