@@ -16,6 +16,21 @@ DROP TABLE IF EXISTS "participation" CASCADE;
 DROP TABLE IF EXISTS "team" CASCADE;
 DROP TABLE IF EXISTS "note" CASCADE;
 
+-- Table sport
+CREATE TABLE "sport"(
+    "id" SERIAL PRIMARY KEY,
+    "name_id" INTEGER UNIQUE NOT NULL,
+    "default_max_players" INTEGER,
+    "default_min_players" INTEGER
+);
+
+-- Table city
+CREATE TABLE "city"(
+    "id" SERIAL PRIMARY KEY,
+    "name" INTEGER NOT NULL,
+    "gps_coordinates" POINT NOT NULL
+);
+
 -- Table users
 CREATE TABLE "user"(
     "id" SERIAL PRIMARY KEY,
@@ -36,14 +51,6 @@ COMMENT ON COLUMN "user"."phone_number"
 COMMENT ON COLUMN "user"."password_hash" 
 	IS 'use PASSWORD_BCRYPT algo';
 
--- Table sport
-CREATE TABLE "sport"(
-    "id" SERIAL PRIMARY KEY,
-    "name_id" INTEGER UNIQUE NOT NULL,
-    "default_max_players" INTEGER,
-    "default_min_players" INTEGER
-);
-
 -- Table user_level
 CREATE TABLE "user_level"(
     "id" SERIAL PRIMARY KEY,
@@ -56,13 +63,6 @@ CREATE TABLE "user_level"(
 			ON UPDATE CASCADE ON DELETE CASCADE,
 		FOREIGN KEY("sport_id") REFERENCES "sport"("id")
 			ON UPDATE CASCADE ON DELETE CASCADE
-);
-
--- Table city
-CREATE TABLE "city"(
-    "id" SERIAL PRIMARY KEY,
-    "name" INTEGER NOT NULL,
-    "gps_coordinates" POINT NOT NULL
 );
 
 -- Table match
@@ -85,20 +85,6 @@ CREATE TABLE "match"(
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- Table participation
-CREATE TABLE "participation"(
-    "id" SERIAL PRIMARY KEY,
-    "user_id" INTEGER NOT NULL,
-    "match_id" INTEGER NOT NULL,
-    "validation" BOOLEAN NOT NULL,
-    "score" INTEGER NOT NULL,
-
-		FOREIGN KEY("user_id") REFERENCES "user"("id")
-			ON UPDATE CASCADE ON DELETE CASCADE,
-		FOREIGN KEY("match_id") REFERENCES "match"("id")
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 -- Table team
 CREATE TABLE "team"(
     "id" SERIAL PRIMARY KEY,
@@ -113,6 +99,20 @@ CREATE TABLE "team"(
 );
 COMMENT ON COLUMN "team"."name"
 	IS 'by default : team 1, team 2...';
+
+-- Table participation
+CREATE TABLE "participation"(
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INTEGER NOT NULL,
+    "match_id" INTEGER NOT NULL,
+    "validation" BOOLEAN NOT NULL,
+    "score" INTEGER NOT NULL,
+
+		FOREIGN KEY("user_id") REFERENCES "user"("id")
+			ON UPDATE CASCADE ON DELETE CASCADE,
+		FOREIGN KEY("match_id") REFERENCES "match"("id")
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
 
 -- Table note
 CREATE TABLE "note"(
