@@ -27,7 +27,7 @@ CREATE TABLE "sport"(
 -- Table city
 CREATE TABLE "city"(
     "id" SERIAL PRIMARY KEY,
-    "name" INTEGER NOT NULL,
+    "name" VARCHAR(64) NOT NULL,
     "gps_coordinates" POINT NOT NULL
 );
 
