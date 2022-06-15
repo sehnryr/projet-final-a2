@@ -7,13 +7,13 @@ Usage:          psql -U postgres -d matchmaking -a -f model.sql
                 https://stackoverflow.com/a/23992045/12619942
 *******************************************************************************/
 
-DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS "sport" CASCADE;
-DROP TABLE IF EXISTS "user_level" CASCADE;
 DROP TABLE IF EXISTS "city" CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS "user_level" CASCADE;
 DROP TABLE IF EXISTS "match" CASCADE;
-DROP TABLE IF EXISTS "participation" CASCADE;
 DROP TABLE IF EXISTS "team" CASCADE;
+DROP TABLE IF EXISTS "participation" CASCADE;
 DROP TABLE IF EXISTS "note" CASCADE;
 
 -- Table sport
