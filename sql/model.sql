@@ -118,7 +118,7 @@ COMMENT ON COLUMN "team"."name"
 CREATE TABLE "note"(
     "id" SERIAL PRIMARY KEY,
     "score" SMALLINT NOT NULL,
-    "comment" INTEGER NOT NULL,
+    "comment" TEXT NOT NULL,
     "user_id" INTEGER UNIQUE NOT NULL,
 
 		FOREIGN KEY("user_id") REFERENCES "user"("id")
