@@ -1,5 +1,7 @@
 <?php
 /*
+* PHP version 7.4.28
+*
 * @author Paul-Adrien PENET <pauladrienpenet@gmail.com
 * @author Youn Mélois <youn@melois.dev>
 */
@@ -10,6 +12,3 @@
   define('DB_NAME', 'projet');
   define('DB_SERVER', 'projet');
   define('DB_PORT', 'projet');
-
-  
-?>
