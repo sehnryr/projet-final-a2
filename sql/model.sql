@@ -28,6 +28,11 @@ CREATE TABLE "sport"(
 CREATE TABLE "city"(
     "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(64) NOT NULL,
+    "postal_code" VARCHAR(10) NOT NULL,
+    "department_name" VARCHAR(64) NOT NULL,
+    "department_code" VARCHAR(10) NOT NULL,
+    "region_name" VARCHAR(64) NOT NULL,
+    "region_code" VARCHAR(10) NOT NULL,
     "gps_coordinates" POINT NOT NULL
 );
 
@@ -42,6 +47,7 @@ CREATE TABLE "user"(
     "password_hash" VARCHAR(60) NOT NULL,
     "profile_picture_url" VARCHAR(255),
     "birthdate" DATE NOT NULL,
+    "access_token" VARCHAR(64)
 
 		FOREIGN KEY("city_id") REFERENCES "city"("id")
 			ON UPDATE CASCADE ON DELETE CASCADE
