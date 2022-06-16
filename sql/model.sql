@@ -94,7 +94,7 @@ CREATE TABLE "match"(
     "duration" TIME(0) WITHOUT TIME ZONE NOT NULL,
     "datetime" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
     "description" TEXT NOT NULL,
-    "recommanded_level" INTEGER NOT NULL,
+    "recommended_level" INTEGER NOT NULL,
 
 		FOREIGN KEY("organizer_id") REFERENCES "user"("id")
 			ON UPDATE CASCADE ON DELETE CASCADE,

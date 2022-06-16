@@ -189,7 +189,7 @@ def generate_matches_dataset():
         "duration",
         "datetime",
         "description",
-        "recommanded_level",
+        "recommended_level",
     ]
 
     with open(file=f"./{subdirectory}/matches.csv", mode="w+") as f:
@@ -209,7 +209,7 @@ def generate_matches_dataset():
                 start_date="now", end_date="+1y"
             ).isoformat()
             description = fake.paragraph(nb_sentences=3)
-            recommanded_level = random.randint(0, 5)
+            recommended_level = random.randint(0, 5)
 
             f.write(
                 ",".join(
@@ -224,7 +224,7 @@ def generate_matches_dataset():
                         duration,
                         datetime,
                         description,
-                        str(recommanded_level),
+                        str(recommended_level),
                     ]
                 )
                 + "\n"
