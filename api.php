@@ -154,6 +154,17 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 		}
 		break;
 	
+    case 'match' . "GET":
+        if(isset($_SERVER['HTTP_AUTHORIZATION'])){
+            try{
+                $authorization = $db->getUserInfos($authorization)
+                $userInfos = $db->getUserInfos($authorization);
+		        $userId = $userInfos['id'];    
+                $matchs = $db->getUserMatchs($userId);
+            } catch (Exception | Error $_){
+                APIErrors::invalidGrant();
+            }
+        }
 	default:
 		http_response_code(404);
 		die();

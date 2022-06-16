@@ -345,6 +345,7 @@ class Database
             throw new AuthenticationException();
         }
 
+<<<<<<< HEAD
         $request = 'DELETE FROM users
                       WHERE email = :email';
 
@@ -353,3 +354,50 @@ class Database
         $statement->execute();
     }
 }
+=======
+      $request = 'DELETE FROM user
+                      WHERE email = :email';
+
+      $statement = $this->PDO->prepare($request);
+      $statement->bindParam(':email', $email);
+      $statement->execute();
+  }
+  public function deleteUserWithToken(string $access_token): void
+    {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        $request = 'DELETE FROM user
+                        WHERE access_token = :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+    }
+  public function getUserInfos(string $access_token): ?array
+  {
+    $request = 'SELECT id, city_id, first_name, last_name, email, phone_number, birthdate FROM user
+                        WHERE access_token = :access_token';
+
+    $statement = $this->PDO->prepare($request);
+    $statement->bindParam(':access_token', $access_token)        
+    $statement->execute();
+
+    $result = $statement->fetch(PDO::FETCH_OBJ);
+
+    if (empty($result)) {
+      throw new AuthentificationException();
+    }
+
+        return (array) $result;
+  }
+  public function getUserMatchs(
+    
+  ): ?array
+  {
+    $request 
+  }
+  }
+
+>>>>>>> 4de1b45 (api getuser info addition, user.js user.html addition)
