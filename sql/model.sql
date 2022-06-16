@@ -7,6 +7,15 @@ Usage:          psql -U postgres -d matchmaking -a -f model.sql
                 https://stackoverflow.com/a/23992045/12619942
 *******************************************************************************/
 
+TRUNCATE TABLE "sport" CASCADE;
+TRUNCATE TABLE "city" CASCADE;
+TRUNCATE TABLE "user" CASCADE;
+TRUNCATE TABLE "user_level" CASCADE;
+TRUNCATE TABLE "match" CASCADE;
+TRUNCATE TABLE "participation" CASCADE;
+TRUNCATE TABLE "team" CASCADE;
+TRUNCATE TABLE "note" CASCADE;
+
 DROP TABLE IF EXISTS "sport" CASCADE;
 DROP TABLE IF EXISTS "city" CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
