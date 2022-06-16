@@ -33,7 +33,8 @@ CREATE TABLE "city"(
     "department_code" VARCHAR(10) NOT NULL,
     "region_name" VARCHAR(64) NOT NULL,
     "region_code" VARCHAR(10) NOT NULL,
-    "gps_coordinates" POINT NOT NULL
+    "latitude" DOUBLE PRECISION NOT NULL,
+    "longitude" DOUBLE PRECISION NOT NULL
 );
 
 -- Table users
@@ -47,7 +48,7 @@ CREATE TABLE "user"(
     "password_hash" VARCHAR(60) NOT NULL,
     "profile_picture_url" VARCHAR(255),
     "birthdate" DATE NOT NULL,
-    "access_token" VARCHAR(64)
+    "access_token" VARCHAR(64),
 
 		FOREIGN KEY("city_id") REFERENCES "city"("id")
 			ON UPDATE CASCADE ON DELETE CASCADE
@@ -76,7 +77,8 @@ CREATE TABLE "match"(
     "id" SERIAL PRIMARY KEY,
     "organizer_id" INTEGER NOT NULL,
     "sport_id" INTEGER NOT NULL,
-    "gps_coordinates" POINT NOT NULL,
+    "latitude" DOUBLE PRECISION NOT NULL,
+    "longitude" DOUBLE PRECISION NOT NULL,
     "max_players" INTEGER NOT NULL,
     "min_players" INTEGER NOT NULL,
     "price" DOUBLE PRECISION,
