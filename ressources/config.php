@@ -6,9 +6,11 @@
 * @author Youn Mélois <youn@melois.dev>
 */
 
-  // Database constants to connect to database.
-  define('DB_USER', '127.0.0.1');
-  define('DB_PASSWORD', '5432');
-  define('DB_NAME', 'projet');
-  define('DB_SERVER', 'projet');
-  define('DB_PORT', 'projet');
+/* 
+  Parameters to connect to database.
+*/
+const DB_USER = '127.0.0.1';
+const DB_PORT = '5432';
+const DB_NAME = 'matchmaking';
+const DB_SERVER = 'postgres';
+const DB_PASSWORD = 'new_password';
