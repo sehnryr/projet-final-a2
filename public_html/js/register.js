@@ -17,7 +17,8 @@ $('#formRegister').on('submit', (event) => {
 			lastname: $("#lastnameRegister").val(),
 			email: $("#emailRegister").val(),
 			phone: $("#phoneRegister").val(),
-			password: $("#passwordRegister").val()
+			password: $("#passwordRegister").val(),
+			city: $("cityRegister").val()
 		}
 	}).done((data) => {
 		createCookie('mm_session', data['access_token'])
