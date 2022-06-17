@@ -303,4 +303,20 @@ class Database
 
         return (array) $result;
     }
+
+    /**
+     * Get a list of the sports in the database.
+     */
+    public function getSports(): array
+    {
+        $request = 'SELECT * FROM "sport"';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        return (array) $result;
+    }
 }

@@ -128,6 +128,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'cities' . HTTPRequestMethods::GET:
         sendResponse(HTTPResponseCodes::Success, $db->getCities());
     case 'sports' . HTTPRequestMethods::GET:
+        sendResponse(HTTPResponseCodes::Success, $db->getSports());
     case 'user_level' . HTTPRequestMethods::GET:
     case 'user_level' . HTTPRequestMethods::PUT:
     case 'match' . HTTPRequestMethods::GET:
