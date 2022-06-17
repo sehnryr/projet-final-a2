@@ -329,7 +329,7 @@ class Database
      */
     public function getParticipations(
         string $access_token,
-        int $match_id = null,
+        int $match_id = null
     ): array {
         if (!$this->verifyUserAccessToken($access_token)) {
             throw new AuthenticationException();
