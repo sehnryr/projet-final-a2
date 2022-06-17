@@ -20,7 +20,6 @@ class Database
      * @throws PDOException Error thrown if the connection to 
      *                      the database failed.
      */
-
     public function __construct()
     {
         $db_name = DB_NAME;
@@ -39,8 +38,7 @@ class Database
      * 
      * @return string The password hash.
      */
-
-    private function getUserPasswordHash(
+    private function _getUserPasswordHash(
         string $email
     ): ?string {
         $email = strtolower($email);
@@ -73,7 +71,7 @@ class Database
         string $email,
         string $password
     ): bool {
-        $password_hash = $this->getUserPasswordHash($email);
+        $password_hash = $this->_getUserPasswordHash($email);
         return !empty($password_hash) &&
             password_verify($password, $password_hash);
     }
@@ -345,14 +343,14 @@ class Database
             throw new AuthenticationException();
         }
 
-      $request = 'DELETE FROM user
+        $request = 'DELETE FROM user
                       WHERE email = :email';
 
-      $statement = $this->PDO->prepare($request);
-      $statement->bindParam(':email', $email);
-      $statement->execute();
-  }
-  public function deleteUserWithToken(string $access_token): void
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+    }
+    public function deleteUserWithToken(string $access_token): void
     {
         if (!$this->verifyUserAccessToken($access_token)) {
             throw new AuthenticationException();
@@ -365,28 +363,4 @@ class Database
         $statement->bindParam(':access_token', $access_token);
         $statement->execute();
     }
-  public function getUserInfos(string $access_token): ?array
-  {
-    $request = 'SELECT id, city_id, first_name, last_name, email, phone_number, birthdate FROM user
-                        WHERE access_token = :access_token';
-
-    $statement = $this->PDO->prepare($request);
-    $statement->bindParam(':access_token', $access_token)        
-    $statement->execute();
-
-    $result = $statement->fetch(PDO::FETCH_OBJ);
-
-    if (empty($result)) {
-      throw new AuthentificationException();
-    }
-
-        return (array) $result;
-  }
-  public function getUserMatchs(
-    
-  ): ?array
-  {
-    $request 
-  }
-  }
-
+}
