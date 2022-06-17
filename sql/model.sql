@@ -107,7 +107,7 @@ CREATE TABLE "match"(
 -- Table team
 CREATE TABLE "team"(
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(64) UNIQUE,
+    "name" VARCHAR(64),
     "match_id" INTEGER NOT NULL,
 
 		FOREIGN KEY("match_id") REFERENCES "match"("id")
@@ -115,6 +115,7 @@ CREATE TABLE "team"(
 );
 COMMENT ON COLUMN "team"."name"
 	IS 'by default : team 1, team 2...';
+ALTER TABLE "team" ADD CONSTRAINT uq_name_match_id UNIQUE("name", "match_id");
 
 -- Table participation
 CREATE TABLE "participation"(
