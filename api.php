@@ -31,6 +31,14 @@ function getAuthorizationToken(): ?string
     return $authorization;
 }
 
+function sendResponse(int $responseCode, array $data = null): void
+{
+    $encodedJson = !empty($data) ? json_encode($data) : null;
+
+    http_response_code($responseCode);
+    die($encodedJson);
+}
+
 class HTTPResponseCode
 {
     const Success = 200;
@@ -45,35 +53,40 @@ class APIErrors
 {
     public static function invalidGrant()
     {
-        http_response_code(HTTPResponseCode::BadRequest);
-        die(json_encode(array(
-            'error' => 'invalid_grant',
-            'error_description' => 'The authorization code is invalid or expired.'
-        )));
+        sendResponse(
+            HTTPResponseCode::BadRequest,
+            array(
+                'error' => 'invalid_grant',
+                'error_description' => 'The authorization code is invalid or expired.'
+            )
+        );
     }
 
     public static function invalidHeader()
     {
-        http_response_code(HTTPResponseCode::BadRequest);
-        die(json_encode(array(
-            'error' => 'invalid_header',
-            'error_description' => 'The request is missing the Authorization header or the Authorization header is invalid.'
-        )));
+        sendResponse(
+            HTTPResponseCode::BadRequest,
+            array(
+                'error' => 'invalid_header',
+                'error_description' => 'The request is missing the Authorization header or the Authorization header is invalid.'
+            )
+        );
     }
 
     public static function invalidRequest()
     {
-        http_response_code(HTTPResponseCode::BadRequest);
-        die(json_encode(array(
-            'error' => 'invalid_request',
-            'error_description' => 'The request is missing a parameter, uses an unsupported parameter, uses an invalid parameter or repeats a parameter.'
-        )));
+        sendResponse(
+            HTTPResponseCode::BadRequest,
+            array(
+                'error' => 'invalid_request',
+                'error_description' => 'The request is missing a parameter, uses an unsupported parameter, uses an invalid parameter or repeats a parameter.'
+            )
+        );
     }
 
     public static function internalError()
     {
-        http_response_code(HTTPResponseCode::InternalServerError);
-        die();
+        sendResponse(HTTPResponseCode::InternalServerError);
     }
 }
 
@@ -96,12 +109,14 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         // Send response code 200: success
-        http_response_code(HTTPResponseCode::Success);
-        die(json_encode(array(
-            'access_token' => $access_token,
-            'created_at' => time(),
-            'token_type' => 'bearer'
-        )));
+        sendResponse(
+            HTTPResponseCode::Success,
+            array(
+                'access_token' => $access_token,
+                'created_at' => time(),
+                'token_type' => 'bearer'
+            )
+        );
         break;
     case 'logout' . POST:
     case 'register' . POST:
@@ -128,7 +143,6 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'note' . PUT:
     case 'notification' . POST:
     default:
-        http_response_code(HTTPResponseCode::NotFound);
-        die();
+        sendResponse(HTTPResponseCode::NotFound);
         break;
 }
