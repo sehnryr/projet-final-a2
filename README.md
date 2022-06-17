@@ -1,3 +1,27 @@
+## Setup database and fill with sample data
+
+First, make sure the database `matchmaking` is created.
+```sql
+CREATE DATABASE "matchmaking";
+```
+
+Add the `model.sql` to that database. This will add the structure of the tables.
+```sh
+psql -U postgres -d matchmaking -a -f sql/model.sql
+```
+
+Next, we need to add the sample data.
+```sh
+python3 sql/populate.py --sql-only
+psql -U postgres -d matchmaking -a -f sql/data.sql
+```
+
+You might not have the python dependencies.
+```
+pip3 install unidecode faker
+```
+
+
 ## API
 
 *NOTE: Are noted between brackets [] parameters that are optional.*
