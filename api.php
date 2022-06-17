@@ -3,10 +3,23 @@ require_once 'resources/config.php';
 require_once 'resources/database.php';
 require_once 'resources/exceptions.php';
 
-const GET = 'GET';
-const POST = 'POST';
-const PUT = 'PUT';
-const DELETE = 'DELETE';
+class HTTPRequestMethods
+{
+    const GET = 'GET';
+    const POST = 'POST';
+    const PUT = 'PUT';
+    const DELETE = 'DELETE';
+}
+
+class HTTPResponseCodes
+{
+    const Success = 200;
+    const BadRequest = 400;
+    const Forbidden = 403;
+    const NotFound = 404;
+    const InternalServerError = 500;
+    const NotImplemented = 501;
+}
 
 $pathInfo = explode('/', trim($_SERVER['PATH_INFO'], '/\\'));
 
@@ -39,22 +52,12 @@ function sendResponse(int $responseCode, array $data = null): void
     die($encodedJson);
 }
 
-class HTTPResponseCode
-{
-    const Success = 200;
-    const BadRequest = 400;
-    const Forbidden = 403;
-    const NotFound = 404;
-    const InternalServerError = 500;
-    const NotImplemented = 501;
-}
-
 class APIErrors
 {
     public static function invalidGrant()
     {
         sendResponse(
-            HTTPResponseCode::BadRequest,
+            HTTPResponseCodes::BadRequest,
             array(
                 'error' => 'invalid_grant',
                 'error_description' => 'The authorization code is invalid or expired.'
@@ -65,7 +68,7 @@ class APIErrors
     public static function invalidHeader()
     {
         sendResponse(
-            HTTPResponseCode::BadRequest,
+            HTTPResponseCodes::BadRequest,
             array(
                 'error' => 'invalid_header',
                 'error_description' => 'The request is missing the Authorization header or the Authorization header is invalid.'
@@ -76,7 +79,7 @@ class APIErrors
     public static function invalidRequest()
     {
         sendResponse(
-            HTTPResponseCode::BadRequest,
+            HTTPResponseCodes::BadRequest,
             array(
                 'error' => 'invalid_request',
                 'error_description' => 'The request is missing a parameter, uses an unsupported parameter, uses an invalid parameter or repeats a parameter.'
@@ -86,13 +89,13 @@ class APIErrors
 
     public static function internalError()
     {
-        sendResponse(HTTPResponseCode::InternalServerError);
+        sendResponse(HTTPResponseCodes::InternalServerError);
     }
 }
 
 switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
-    case 'login' . POST:
+    case 'login' . HTTPRequestMethods::POST:
         $email = $_POST['email'];
         $password = $_POST['password'];
 
@@ -110,7 +113,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
         // Send response code 200: success
         sendResponse(
-            HTTPResponseCode::Success,
+            HTTPResponseCodes::Success,
             array(
                 'access_token' => $access_token,
                 'created_at' => time(),
@@ -118,31 +121,31 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             )
         );
         break;
-    case 'logout' . POST:
-    case 'register' . POST:
-    case 'delete' . DELETE:
-    case 'user' . GET:
-    case 'cities' . GET:
-    case 'sports' . GET:
-    case 'user_level' . GET:
-    case 'user_level' . PUT:
-    case 'match' . GET:
-    case 'match' . POST:
-    case 'match' . PUT:
-    case 'participations' . GET:
-    case 'participate' . POST:
-    case 'participate' . DELETE:
-    case 'validate' . PUT:
-    case 'score' . PUT:
-    case 'teams' . GET:
-    case 'team' . POST:
-    case 'team' . PUT:
-    case 'team' . DELETE:
-    case 'rename_team' . DELETE:
-    case 'note' . POST:
-    case 'note' . PUT:
-    case 'notification' . POST:
+    case 'logout' . HTTPRequestMethods::POST:
+    case 'register' . HTTPRequestMethods::POST:
+    case 'delete' . HTTPRequestMethods::DELETE:
+    case 'user' . HTTPRequestMethods::GET:
+    case 'cities' . HTTPRequestMethods::GET:
+    case 'sports' . HTTPRequestMethods::GET:
+    case 'user_level' . HTTPRequestMethods::GET:
+    case 'user_level' . HTTPRequestMethods::PUT:
+    case 'match' . HTTPRequestMethods::GET:
+    case 'match' . HTTPRequestMethods::POST:
+    case 'match' . HTTPRequestMethods::PUT:
+    case 'participations' . HTTPRequestMethods::GET:
+    case 'participate' . HTTPRequestMethods::POST:
+    case 'participate' . HTTPRequestMethods::DELETE:
+    case 'validate' . HTTPRequestMethods::PUT:
+    case 'score' . HTTPRequestMethods::PUT:
+    case 'teams' . HTTPRequestMethods::GET:
+    case 'team' . HTTPRequestMethods::POST:
+    case 'team' . HTTPRequestMethods::PUT:
+    case 'team' . HTTPRequestMethods::DELETE:
+    case 'rename_team' . HTTPRequestMethods::DELETE:
+    case 'note' . HTTPRequestMethods::POST:
+    case 'note' . HTTPRequestMethods::PUT:
+    case 'notification' . HTTPRequestMethods::POST:
     default:
-        sendResponse(HTTPResponseCode::NotFound);
+        sendResponse(HTTPResponseCodes::NotFound);
         break;
 }
