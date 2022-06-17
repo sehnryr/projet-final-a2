@@ -148,6 +148,10 @@ CREATE TABLE "note"(
 -- Table notification
 CREATE TABLE "notification"(
     "id" SERIAL PRIMARY KEY,
+    "user_id" INTEGER NOT NULL,
     "message" TEXT NOT NULL,
-    "url" TEXT NOT NULL
+    "url" TEXT NOT NULL,
+
+		FOREIGN KEY("user_id") REFERENCES "user"("id")
+			ON UPDATE CASCADE ON DELETE CASCADE
 )
