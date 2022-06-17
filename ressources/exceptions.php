@@ -20,3 +20,10 @@ class AuthenticationException extends Exception
 class DuplicateEmailException extends Exception
 {
 }
+
+/**
+ * Exception when an id isn't associated to an entry in a table.
+ */
+class EntryDoesNotExists extends Exception
+{
+}
