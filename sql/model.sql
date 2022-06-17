@@ -104,34 +104,34 @@ CREATE TABLE "match"(
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+-- Table team
+CREATE TABLE "team"(
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(64) UNIQUE,
+    "match_id" INTEGER NOT NULL,
+
+		FOREIGN KEY("match_id") REFERENCES "match"("id")
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
+COMMENT ON COLUMN "team"."name"
+	IS 'by default : team 1, team 2...';
+
 -- Table participation
 CREATE TABLE "participation"(
     "id" SERIAL PRIMARY KEY,
     "user_id" INTEGER NOT NULL,
     "match_id" INTEGER NOT NULL,
+    "team_id" INTEGER,
     "validation" BOOLEAN NOT NULL,
     "score" INTEGER NOT NULL,
 
 		FOREIGN KEY("user_id") REFERENCES "user"("id")
 			ON UPDATE CASCADE ON DELETE CASCADE,
 		FOREIGN KEY("match_id") REFERENCES "match"("id")
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
-
--- Table team
-CREATE TABLE "team"(
-    "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(64) UNIQUE,
-    "participation_id" INTEGER NOT NULL,
-    "match_id" INTEGER NOT NULL,
-
-		FOREIGN KEY("participation_id") REFERENCES "participation"("id")
 			ON UPDATE CASCADE ON DELETE CASCADE,
-		FOREIGN KEY("match_id") REFERENCES "match"("id")
+    FOREIGN KEY("team_id") REFERENCES "team"("id")
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
-COMMENT ON COLUMN "team"."name"
-	IS 'by default : team 1, team 2...';
 
 -- Table note
 CREATE TABLE "note"(
