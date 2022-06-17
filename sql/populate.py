@@ -9,6 +9,7 @@ country_code = "FR"
 fake = Faker(locale)
 
 subdirectory = "datasets"
+os.mkdir(os.path.dirname(__file__) + "/" + subdirectory)
 
 num_sports = 6
 num_cities = 0  # will be calculated when running `generate_cities_dataset()`
