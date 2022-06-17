@@ -70,6 +70,28 @@ class APIErrors
 switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
     case 'login' . POST:
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        // Throw error if the parameters does not exist.
+        if (!isset($email) || !isset($password)) {
+            APIErrors::invalidRequest();
+        }
+
+        // Try to get the access token
+        try {
+            $access_token = $db->getUserAccessToken($email, $password);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidRequest();
+        }
+
+        http_response_code(200);
+        die(json_encode(array(
+            'access_token' => $access_token,
+            'created_at' => time(),
+            'token_type' => 'bearer'
+        )));
+        break;
     case 'logout' . POST:
     case 'register' . POST:
     case 'delete' . DELETE:
