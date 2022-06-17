@@ -144,7 +144,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'team' . HTTPRequestMethods::POST:
     case 'team' . HTTPRequestMethods::PUT:
     case 'team' . HTTPRequestMethods::DELETE:
-    case 'rename_team' . HTTPRequestMethods::DELETE:
+    case 'rename_team' . HTTPRequestMethods::PUT:
     case 'note' . HTTPRequestMethods::POST:
     case 'note' . HTTPRequestMethods::PUT:
     case 'notification' . HTTPRequestMethods::POST:
