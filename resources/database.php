@@ -296,7 +296,6 @@ class Database
         $request = 'SELECT * FROM "city"';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':access_token', $access_token);
         $statement->execute();
 
         $result = $statement->fetchAll(PDO::FETCH_OBJ);
@@ -312,10 +311,54 @@ class Database
         $request = 'SELECT * FROM "sport"';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':access_token', $access_token);
         $statement->execute();
 
         $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        return (array) $result;
+    }
+
+    /**
+     * Get the participations of a match if the current user is the organizer or
+     * get the participations of the user if authenticated.
+     * 
+     * @param string $access_token
+     * @param int [$match_id]
+     * 
+     * @throws AuthenticationException
+     */
+    public function getParticipations(
+        string $access_token,
+        int $match_id = null,
+    ): array {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        if ($match_id != null) {
+            $request = 'SELECT p."id", p."user_id", p."match_id", p."team_id", p."validation", p."score"
+                            FROM "participation" p 
+                            LEFT JOIN "match" m ON p."match_id" = m."id"
+                            LEFT JOIN "user" u ON m."organizer_id" = u."id"
+                            WHERE m."match_id" = :match_id
+                            AND WHERE u."access_token" = :access_token';
+        } else {
+            $request = 'SELECT p."id", p."user_id", p."match_id", p."team_id", p."validation", p."score"
+                            FROM "participation" p 
+                            LEFT JOIN "user" u ON p."user_id" = u."id"
+                            AND WHERE u."access_token" = :access_token';
+        }
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        if (empty($result)) {
+            throw new AuthenticationException();
+        }
 
         return (array) $result;
     }

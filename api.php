@@ -27,7 +27,7 @@ header('content-type: application/json; charset=utf-8');
 
 $db = new Database();
 
-function getAuthorizationToken(): ?string
+function getAuthorizationToken(): string
 {
     $authorization = $_SERVER['HTTP_AUTHORIZATION'];
 
@@ -120,7 +120,6 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
                 'token_type' => 'bearer'
             )
         );
-        break;
     case 'logout' . HTTPRequestMethods::POST:
     case 'register' . HTTPRequestMethods::POST:
     case 'delete' . HTTPRequestMethods::DELETE:
@@ -136,6 +135,12 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'match' . HTTPRequestMethods::PUT:
     case 'match' . HTTPRequestMethods::DELETE:
     case 'participations' . HTTPRequestMethods::GET:
+        $match_id = $_POST['match_id'] ?? null;
+        $access_token = getAuthorizationToken();
+        sendResponse(
+            HTTPResponseCodes::Success,
+            $db->getParticipations($access_token, $match_id)
+        );
     case 'participate' . HTTPRequestMethods::POST:
     case 'participate' . HTTPRequestMethods::DELETE:
     case 'validate' . HTTPRequestMethods::PUT:
