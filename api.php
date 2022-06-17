@@ -31,11 +31,21 @@ function getAuthorizationToken(): ?string
     return $authorization;
 }
 
+class HTTPResponseCode
+{
+    const Success = 200;
+    const BadRequest = 400;
+    const Forbidden = 403;
+    const NotFound = 404;
+    const InternalServerError = 500;
+    const NotImplemented = 501;
+}
+
 class APIErrors
 {
     public static function invalidGrant()
     {
-        http_response_code(400);
+        http_response_code(HTTPResponseCode::BadRequest);
         die(json_encode(array(
             'error' => 'invalid_grant',
             'error_description' => 'The authorization code is invalid or expired.'
@@ -44,7 +54,7 @@ class APIErrors
 
     public static function invalidHeader()
     {
-        http_response_code(400);
+        http_response_code(HTTPResponseCode::BadRequest);
         die(json_encode(array(
             'error' => 'invalid_header',
             'error_description' => 'The request is missing the Authorization header or the Authorization header is invalid.'
@@ -53,7 +63,7 @@ class APIErrors
 
     public static function invalidRequest()
     {
-        http_response_code(400);
+        http_response_code(HTTPResponseCode::BadRequest);
         die(json_encode(array(
             'error' => 'invalid_request',
             'error_description' => 'The request is missing a parameter, uses an unsupported parameter, uses an invalid parameter or repeats a parameter.'
@@ -62,7 +72,7 @@ class APIErrors
 
     public static function internalError()
     {
-        http_response_code(500);
+        http_response_code(HTTPResponseCode::InternalServerError);
         die();
     }
 }
@@ -85,7 +95,8 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             APIErrors::invalidRequest();
         }
 
-        http_response_code(200);
+        // Send response code 200: success
+        http_response_code(HTTPResponseCode::Success);
         die(json_encode(array(
             'access_token' => $access_token,
             'created_at' => time(),
@@ -117,7 +128,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'note' . PUT:
     case 'notification' . POST:
     default:
-        http_response_code(404);
+        http_response_code(HTTPResponseCode::NotFound);
         die();
         break;
 }
