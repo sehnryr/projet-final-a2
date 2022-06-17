@@ -134,6 +134,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'match' . HTTPRequestMethods::GET:
     case 'match' . HTTPRequestMethods::POST:
     case 'match' . HTTPRequestMethods::PUT:
+    case 'match' . HTTPRequestMethods::DELETE:
     case 'participations' . HTTPRequestMethods::GET:
     case 'participate' . HTTPRequestMethods::POST:
     case 'participate' . HTTPRequestMethods::DELETE:
