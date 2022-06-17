@@ -287,4 +287,20 @@ class Database
         $statement->bindParam(':access_token', $access_token);
         $statement->execute();
     }
+
+    /**
+     * Get a list of the cities stored in the database.
+     */
+    public function getCities(): array
+    {
+        $request = 'SELECT * FROM "city"';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        return (array) $result;
+    }
 }

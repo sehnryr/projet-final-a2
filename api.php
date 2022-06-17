@@ -126,6 +126,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'delete' . HTTPRequestMethods::DELETE:
     case 'user' . HTTPRequestMethods::GET:
     case 'cities' . HTTPRequestMethods::GET:
+        sendResponse(HTTPResponseCodes::Success, $db->getCities());
     case 'sports' . HTTPRequestMethods::GET:
     case 'user_level' . HTTPRequestMethods::GET:
     case 'user_level' . HTTPRequestMethods::PUT:
