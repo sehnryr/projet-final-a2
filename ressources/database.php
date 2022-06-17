@@ -345,16 +345,6 @@ class Database
             throw new AuthenticationException();
         }
 
-<<<<<<< HEAD
-        $request = 'DELETE FROM users
-                      WHERE email = :email';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':email', $email);
-        $statement->execute();
-    }
-}
-=======
       $request = 'DELETE FROM user
                       WHERE email = :email';
 
@@ -400,4 +390,3 @@ class Database
   }
   }
 
->>>>>>> 4de1b45 (api getuser info addition, user.js user.html addition)
