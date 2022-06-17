@@ -7,7 +7,7 @@
  * @author Youn Mélois <youn@melois.dev>
  */
 
-require_once 'constants.php';
+require_once 'config.php';
 require_once 'exceptions.php';
 
 class Database
@@ -43,8 +43,8 @@ class Database
     ): ?string {
         $email = strtolower($email);
 
-        $request = 'SELECT password_hash FROM user 
-                      WHERE email = :email';
+        $request = 'SELECT "password_hash" FROM "user" 
+                      WHERE "email" = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
@@ -85,8 +85,8 @@ class Database
      */
     public function verifyUserAccessToken(string $access_token): bool
     {
-        $request = 'SELECT * FROM user
-                      WHERE access_token = :access_token';
+        $request = 'SELECT * FROM "user"
+                      WHERE "access_token" = :access_token';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':access_token', $access_token);
@@ -118,8 +118,8 @@ class Database
         $access_token = hash('sha256', $email . $password . time());
 
         // Set access token on the user
-        $request = 'UPDATE user SET access_token = :access_token
-                      WHERE email = :email';
+        $request = 'UPDATE "user" SET "access_token" = :access_token
+                      WHERE "email" = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
@@ -130,84 +130,11 @@ class Database
     }
 
     /**
-     * Connects the user by returning its unique id if the 
-     * credentials are valid.
-     * 
-     * @param string $email
-     * @param string $password
-     * @param int $session_expire (optional) The lifetime of the session cookie in seconds.
-     * 
-     * @throws AuthenticationException If the authentication failed.
-     */
-    public function connectUser(
-        string $email,
-        string $password,
-        int $session_expire = 0
-    ): void {
-        if (!$this->verifyUserCredentials($email, $password)) {
-            throw new AuthenticationException('Authentication failed.');
-        }
-
-        $email = strtolower($email);
-
-        $access_token = hash('sha256', $email . $password . microtime(true));
-
-        // Set session hash on the user
-        $request = 'UPDATE user SET access_token = :access_token
-                      WHERE email = :email';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':email', $email);
-        $statement->bindParam(':access_token', $access_token);
-        $statement->execute();
-
-        $access_token = $this->getUserAccessToken($email, $password);
-
-        switch ($session_expire) {
-            case 0:
-                $cookie_expire = 0;
-                break;
-            default:
-                $cookie_expire = time() + $session_expire;
-                break;
-        }
-
-        setcookie('docto_session', $access_token, $cookie_expire);
-    }
-
-    /**
-     * Tries to connect the user with its session cookie if valid.
-     * 
-     * @throws AuthenticationException If the authentication failed.
-     */
-    public function tryConnectUser(): void
-    {
-        if (!isset($_COOKIE['mm_session'])) {
-            throw new AuthenticationException('Authentication failed.');
-        }
-
-        $access_token = $_COOKIE['mm_session'];
-
-        $request = 'SELECT * FROM user
-                      WHERE access_token = :access_token';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':access_token', $access_token);
-        $statement->execute();
-
-        $result = $statement->fetch(PDO::FETCH_OBJ);
-
-        if (empty($result)) {
-            throw new AuthenticationException('Authentication failed.');
-        }
-    }
-
-    /**
      * Removes the access token from the user.
      * 
      * @param string $access_token
      * 
-     * @throws AccessTokenNotFound If the access token is invalid.
+     * @throws AuthenticationException If the credentials are invalid.
      */
     public function removeUserAccessToken(string $access_token): void
     {
@@ -216,8 +143,8 @@ class Database
         }
 
         // remove access token
-        $request = 'UPDATE user SET access_token = NULL
-                      WHERE access_token = :access_token';
+        $request = 'UPDATE "user" SET "access_token" = NULL
+                      WHERE "access_token" = :access_token';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':access_token', $access_token);
@@ -225,32 +152,45 @@ class Database
     }
 
     /**
-     * Disconnects the current user by resetting the session hash stored in the
-     * database.
+     * Get all the public information on a user.
+     * 
+     * @param int $user_id
+     * 
+     * @return array Array of id, first_name, last_name, profile_picture_url.
+     * 
+     * @throws EntryDoesNotExists If the id is outbound.
      */
-    public function disconnectUser(): void
+    public function getUserInfos(string $user_id): array
     {
-        if (!isset($_COOKIE['mm_session'])) {
-            return;
+        $request = 'SELECT "id", "first_name", "last_name", "profile_picture_url"
+                        FROM "user"
+                        WHERE "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $user_id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($result)) {
+            throw new EntryDoesNotExists("Id " . $user_id . " does not exist.");
         }
 
-        $access_token = $_COOKIE['mm_session'];
-        $this->removeUserAccessToken($access_token);
-
-        setcookie('mm_session', '', time() - 3600);
+        return (array) $result;
     }
 
     /**
-     * Gets the general infos of a user
+     * Gets all the information on the user who as access_token.
      * 
      * @param string $access_token
      * 
-     * @return array Array of id, firstname, lastname, phone number and email.
+     * @return array Array of id, first_name, last_name, phone number and email.
      */
-    public function getUserInfos(string $access_token): ?array
+    public function getUserPersonalInfos(string $access_token): ?array
     {
-        $request = 'SELECT id, firstname, lastname, phone_number, email, profile_picture_url, birthdate, FROM user
-                      WHERE access_token = :access_token';
+        $request = 'SELECT "id", "first_name", "last_name", "email", "phone_number", "profile_picture_url", "birthdate" 
+                        FROM "user"
+                        WHERE "access_token" = :access_token';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':access_token', $access_token);
@@ -268,25 +208,25 @@ class Database
     /**
      * Create an user in the database and return a bool to result
      *
-     * @param string $firstname first name
-     * @param string $lastname last name
+     * @param string $first_name first name
+     * @param string $last_name last name
      * @param string $email 
-     * @param string $phoneNumber phone number
+     * @param string $phone_number phone number
      * @param string $password
      *
      */
     public function createUser(
-        string $firstname,
-        string $lastname,
+        string $first_name,
+        string $last_name,
         string $email,
-        string $phoneNumber,
         string $password,
         string $birthdate,
-        string $cityName
-    ) {
+        string $city_id,
+        string $phone_number = NULL
+    ): void {
         // test if user already exists
-        $request = 'SELECT * FROM user
-                      WHERE email = :email';
+        $request = 'SELECT * FROM "user"
+                      WHERE "email" = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
@@ -312,52 +252,36 @@ class Database
         $city_id = $result->id;
 
 
-        $request = 'INSERT INTO user 
-                      (city_id, first_name, last_name, email, phone_number, password_hash, birthdate)
-                      VALUES (:city_id, :firstname, :lastname, :email, :phone_number, :password_hash, :birthdate)';
+        $request = 'INSERT INTO "user" 
+                      ("city_id", "first_name", "last_name", "email", "phone_number", "password_hash", "birthdate")
+                      VALUES (:city_id, :first_name, :last_name, :email, :phone_number, :password_hash, :birthdate)';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':city_id', $city_id);
-        $statement->bindParam(':firstname', $firstname);
-        $statement->bindParam(':lastname', $lastname);
+        $statement->bindParam(':first_name', $first_name);
+        $statement->bindParam(':last_name', $last_name);
         $statement->bindParam(':email', $email);
+        $statement->bindParam(':phone_number', $phone_number);
         $statement->bindParam(':password_hash', $password_hash);
-        $statement->bindParam(':phone_number', $phoneNumber);
         $statement->bindParam(':birthdate', $birthdate);
         $statement->execute();
     }
 
     /**
-     * Deletes a user.
+     * Delete a user.
      * 
-     * @param string $email
-     * @param string $password
+     * @param string $access_token
      * 
      * @throws AuthenticationException
      */
-    public function deleteUser(
-        string $email,
-        string $password
-    ): void {
-        if (!$this->verifyUserCredentials($email, $password)) {
-            throw new AuthenticationException();
-        }
-
-        $request = 'DELETE FROM user
-                      WHERE email = :email';
-
-        $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':email', $email);
-        $statement->execute();
-    }
-    public function deleteUserWithToken(string $access_token): void
+    public function deleteUser(string $access_token): void
     {
         if (!$this->verifyUserAccessToken($access_token)) {
             throw new AuthenticationException();
         }
 
-        $request = 'DELETE FROM user
-                        WHERE access_token = :access_token';
+        $request = 'DELETE FROM "user"
+                        WHERE "access_token" = :access_token';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':access_token', $access_token);
