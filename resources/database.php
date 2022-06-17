@@ -103,14 +103,14 @@ class Database
      * @param string $email
      * @param string $password
      * 
-     * @return string The access_token.
+     * @throws AuthenticationException If the credentials are invalid.
      */
     public function getUserAccessToken(
         string $email,
         string $password
     ): ?string {
         if (!$this->verifyUserCredentials($email, $password)) {
-            return NULL;
+            throw new AuthenticationException();
         }
 
         $email = strtolower($email);
