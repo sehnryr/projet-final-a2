@@ -323,6 +323,16 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             )
         );
     case 'match' . HTTPRequestMethods::GET:
+        $match_id = $_GET['match_id'];
+
+        if (!isset($match_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            $db->getMatch((int)$match_id)
+        );
     case 'match' . HTTPRequestMethods::POST:
     case 'match' . HTTPRequestMethods::PUT:
     case 'match' . HTTPRequestMethods::DELETE:

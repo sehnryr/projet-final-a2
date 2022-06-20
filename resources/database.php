@@ -331,7 +331,6 @@ class Database
         int $user_id,
         int $sport_id
     ): array {
-        // check if the access_token is of the user or an organizer
         $request = 'SELECT * FROM "user_level"
                         WHERE "user_id" = :user_id
                         AND "sport_id" = :sport_id';
@@ -438,6 +437,25 @@ class Database
         if (empty($result)) {
             throw new AuthenticationException();
         }
+
+        return (array) $result;
+    }
+
+    /**
+     * Get a match info.
+     * 
+     * @param int $match_id
+     */
+    public function getMatch(int $match_id): array
+    {
+        $request = 'SELECT * FROM "match"
+                        WHERE "match_id" = :match_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
 
         return (array) $result;
     }
