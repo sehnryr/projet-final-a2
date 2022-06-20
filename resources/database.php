@@ -334,7 +334,7 @@ class Database
         // check if the access_token is of the user or an organizer
         $request = 'SELECT * FROM "user_level"
                         WHERE "user_id" = :user_id
-                        AND WHERE "sport_id" = :sport_id';
+                        AND "sport_id" = :sport_id';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':user_id', $user_id);
@@ -369,12 +369,12 @@ class Database
                             LEFT JOIN "match" m ON p."match_id" = m."id"
                             LEFT JOIN "user" u ON m."organizer_id" = u."id"
                             WHERE m."match_id" = :match_id
-                            AND WHERE u."access_token" = :access_token';
+                            AND u."access_token" = :access_token';
         } else {
             $request = 'SELECT p."id", p."user_id", p."match_id", p."team_id", p."validation", p."score"
                             FROM "participation" p 
                             LEFT JOIN "user" u ON p."user_id" = u."id"
-                            AND WHERE u."access_token" = :access_token';
+                            WHERE u."access_token" = :access_token';
         }
 
         $statement = $this->PDO->prepare($request);
