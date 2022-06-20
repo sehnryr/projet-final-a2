@@ -141,7 +141,9 @@ def generate_users_dataset(sql_only):
                 first_name = fake.first_name()
                 last_name = fake.last_name()
                 phone_number = fake.phone_number()
-                password_hash = hash(first_name + last_name + phone_number)
+                password_hash = (
+                    "$2y$10$9p887/x3ZbZWzrii/Ey8POINcS9zmSB2cC1sHaxlTCIM5V3XqzbI."
+                )
                 email = unidecode(
                     first_name.lower().replace(" ", "")
                     + last_name.lower().replace(" ", "")
