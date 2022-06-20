@@ -29,6 +29,13 @@ class EntryDoesNotExists extends Exception
 }
 
 /**
+ * Thrown when value is not correct. E.g. out of bound.
+ */
+class PatternException extends Exception
+{
+}
+
+/**
  * Thrown when the authorization code is invalid or expired.
  */
 class InvalidGrantException extends Exception

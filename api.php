@@ -247,6 +247,36 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         sendResponse(HTTPResponseCodes::Success, $data);
+    case 'user_level' . HTTPRequestMethods::POST:
+        $user_id = $_GET['sport_id'];
+        $level = $_GET['level'];
+        $description = $_GET['description'];
+
+        $access_token = getAuthorizationToken();
+
+        if (
+            !isset($user_id) ||
+            !isset($level) ||
+            !isset($description)
+        ) {
+            APIErrors::invalidRequest();
+        }
+
+        try {
+            $db->setUserLevel($access_token, $sport_id, $level, $description);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (PatternException $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            $db->getUserLevel(
+                $db->getUserPersonalInfos($access_token)['id'],
+                $sport_id
+            )
+        );
     case 'user_level' . HTTPRequestMethods::PUT:
     case 'match' . HTTPRequestMethods::GET:
     case 'match' . HTTPRequestMethods::POST:

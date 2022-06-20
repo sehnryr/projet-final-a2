@@ -347,6 +347,58 @@ class Database
     }
 
     /**
+     * Set the user_level of a user in a specific sport according to the
+     * access token is valid.
+     * 
+     * @param string $access_token
+     * @param int $sport_id
+     * @param int $level Value between 0 and 5
+     * @param string $description
+     * 
+     * @throws AuthenticationException
+     * @throws PatternException
+     */
+    public function setUserLevel(
+        string $access_token,
+        int $sport_id,
+        int $level,
+        string $description
+    ): void {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        if ($level < 0 || $level > 5) {
+            throw new PatternException();
+        }
+
+        $user_id = $this->getUserPersonalInfos($access_token)['id'];
+
+        // Delete previous record if exists
+        $request = 'DELETE up FROM "user_level" up
+                        LEFT JOIN "user" u ON up."user_id" = u."id"
+                        WHERE u."access_token" = :access_token
+                        AND up."sport_id" = :sport_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->bindParam(':sport_id', $sport_id);
+        $statement->execute();
+
+        // Insert
+        $request = 'INSERT INTO "user_level"
+                        ("user_id", "sport_id", "level", "description")
+                        VALUES (:user_id, :sport_id, :level, :description)';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':sport_id', $sport_id);
+        $statement->bindParam(':level', $level);
+        $statement->bindParam(':description', $description);
+        $statement->execute();
+    }
+
+    /**
      * Get the participations of a match if the current user is the organizer or
      * get the participations of the user if authenticated.
      * 
