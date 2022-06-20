@@ -278,9 +278,11 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             )
         );
     case 'user_level' . HTTPRequestMethods::PUT:
-        $sport_id = $_POST['sport_id'];
-        $level = $_POST['level'];
-        $description = $_POST['description'];
+        parse_str(file_get_contents('php://input'), $_PUT);
+
+        $sport_id = $_PUT['sport_id'];
+        $level = $_PUT['level'];
+        $description = $_PUT['description'];
 
         $access_token = getAuthorizationToken();
 
