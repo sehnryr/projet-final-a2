@@ -457,6 +457,19 @@ class Database
 
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
-        return (array) $result;
+        $data = (array)$result;
+
+        $request = 'SELECT * FROM "participation"
+                        WHERE "match_id" = :match_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        $data['participation'] = (array) $result;
+
+        return (array) $data;
     }
 }
