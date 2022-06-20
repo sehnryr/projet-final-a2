@@ -449,7 +449,7 @@ class Database
     public function getMatch(int $match_id): array
     {
         $request = 'SELECT * FROM "match"
-                        WHERE "match_id" = :match_id';
+                        WHERE "id" = :match_id';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':match_id', $match_id);
