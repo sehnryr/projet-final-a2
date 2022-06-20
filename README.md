@@ -37,7 +37,7 @@ pip3 install unidecode faker
 | ![GET][GET] | /user | `user_id` | [Authorization: Bearer <access_token>] | Get the user infos whose id is `user_id` and optionally get personal infos if Authorization header is set and valid. |
 | ![GET][GET] | /cities ||| Get the list of the cities stored in the database (by default all the French cities). |
 | ![GET][GET] | /sports ||| Get the list of the sports stored in the database. |
-| ![GET][GET] | /user_level | `user_id`, `sport_id` | Authorization: Bearer <access_token> | Get the user' level whose id is `user_id` if Authorization header is valid. |
+| ![GET][GET] | /user_level | `user_id`, `sport_id` || Get the user' level whose id is `user_id` if Authorization header is valid. |
 | ![PUT][PUT] | /user_level | `sport_id` | Authorization: Bearer <access_token> | Edit one' level in one sport which id is `sport_id` if Authorization header is valid. |
 | ![GET][GET] | /match | `match_id` | [Authorization: Bearer <access_token>] | Get the match whose id is `match_id` and further infos if Authorization header is set and valid. |
 | ![POST][POST] | /match | `sport_id`, `latitude`, `longitude`, `max_players`, `min_players`, `duration`, `datetime`, `description`, `recommended_level`, [`price`] | Authorization: Bearer <access_token> | Create a match with the specified parameters if Authorization header is set. |

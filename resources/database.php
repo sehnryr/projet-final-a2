@@ -322,6 +322,31 @@ class Database
     }
 
     /**
+     * Get the user_level of a user in a specific sport.
+     * 
+     * @param int $user_id
+     * @param int $sport_id
+     */
+    public function getUserLevel(
+        int $user_id,
+        int $sport_id
+    ): array {
+        // check if the access_token is of the user or an organizer
+        $request = 'SELECT * FROM "user_level"
+                        WHERE "user_id" = :user_id
+                        AND WHERE "sport_id" = :sport_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':sport_id', $sport_id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return (array) $result;
+    }
+
+    /**
      * Get the participations of a match if the current user is the organizer or
      * get the participations of the user if authenticated.
      * 

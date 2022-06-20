@@ -233,6 +233,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'sports' . HTTPRequestMethods::GET:
         sendResponse(HTTPResponseCodes::Success, $db->getSports());
     case 'user_level' . HTTPRequestMethods::GET:
+        $user_id = $_GET['user_id'];
+        $sport_id = $_GET['sport_id'];
+
+        if (!isset($user_id) || !isset($sport_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        $data = $db->getUserLevel((int)$user_id, (int)$sport_id);
+
+        if (empty($data)) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'user_level' . HTTPRequestMethods::PUT:
     case 'match' . HTTPRequestMethods::GET:
     case 'match' . HTTPRequestMethods::POST:
