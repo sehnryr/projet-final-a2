@@ -222,7 +222,7 @@ class Database
         string $password,
         string $birthdate,
         string $postal_code,
-        string $phone_number = NULL
+        ?string $phone_number = NULL
     ): void {
         // test if user already exists
         $request = 'SELECT * FROM "user"
