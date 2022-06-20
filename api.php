@@ -123,6 +123,49 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         );
     case 'logout' . HTTPRequestMethods::POST:
     case 'register' . HTTPRequestMethods::POST:
+        $first_name = $_POST['first_name'];
+        $last_name = $_POST['last_name'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $birthdate = $_POST['birthdate'];
+        $city_id = $_POST['city_id'];
+        $phone_number = $_POST['phone_number'];
+
+        if (
+            !isset($first_name) ||
+            !isset($last_name) ||
+            !isset($email) ||
+            !isset($password) ||
+            !isset($birthdate)
+        ) {
+            APIErrors::invalidRequest();
+        }
+
+        $db->createUser(
+            $first_name,
+            $last_name,
+            $email,
+            $password,
+            $birthdate,
+            $city_id,
+            $phone_number ?? NULL
+        );
+
+        try {
+            $access_token = $db->getUserAccessToken($email, $password);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidRequest();
+        }
+
+        // Send response code 200: success
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array(
+                'access_token' => $access_token,
+                'created_at' => time(),
+                'token_type' => 'bearer'
+            )
+        );
     case 'delete' . HTTPRequestMethods::DELETE:
     case 'user' . HTTPRequestMethods::GET:
     case 'cities' . HTTPRequestMethods::GET:
