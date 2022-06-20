@@ -210,12 +210,11 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         $user_id = $_GET['user_id'];
 
         if (!isset($user_id)) {
-            APIErrors::invalidRequest();
-        }
-
-        try {
-            $access_token = tryGetAuthorizationToken();
-        } catch (Exception $_) {
+            try {
+                $access_token = tryGetAuthorizationToken();
+            } catch (Exception $_) {
+                APIErrors::invalidRequest();
+            }
         }
 
         if (isset($access_token)) {
