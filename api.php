@@ -248,9 +248,9 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
         sendResponse(HTTPResponseCodes::Success, $data);
     case 'user_level' . HTTPRequestMethods::POST:
-        $user_id = $_GET['sport_id'];
-        $level = $_GET['level'];
-        $description = $_GET['description'];
+        $user_id = $_POST['sport_id'];
+        $level = $_POST['level'];
+        $description = $_POST['description'];
 
         $access_token = getAuthorizationToken();
 
@@ -263,7 +263,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         try {
-            $db->setUserLevel($access_token, $sport_id, $level, $description);
+            $db->setUserLevel($access_token, (int)$sport_id, (int)$level, $description);
         } catch (AuthenticationException $_) {
             APIErrors::invalidGrant();
         } catch (PatternException $_) {
@@ -274,7 +274,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             HTTPResponseCodes::Success,
             $db->getUserLevel(
                 $db->getUserPersonalInfos($access_token)['id'],
-                $sport_id
+                (int)$sport_id
             )
         );
     case 'user_level' . HTTPRequestMethods::PUT:
