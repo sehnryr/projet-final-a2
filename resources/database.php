@@ -44,7 +44,7 @@ class Database
         $email = strtolower($email);
 
         $request = 'SELECT "password_hash" FROM "user" 
-                      WHERE "email" = :email';
+                      WHERE LOWER("email") = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
@@ -119,7 +119,7 @@ class Database
 
         // Set access token on the user
         $request = 'UPDATE "user" SET "access_token" = :access_token
-                      WHERE "email" = :email';
+                      WHERE LOWER("email") = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
@@ -224,9 +224,12 @@ class Database
         string $postal_code,
         ?string $phone_number = NULL
     ): void {
+
+        $email = strtolower($email);
+
         // test if user already exists
         $request = 'SELECT * FROM "user"
-                      WHERE "email" = :email';
+                      WHERE LOWER("email") = :email';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':email', $email);
