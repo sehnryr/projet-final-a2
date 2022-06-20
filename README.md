@@ -30,7 +30,7 @@ pip3 install unidecode faker
 | :---: | :---: | :---: | :---: | :---: |
 | ![POST][POST] | /login | `email`, `password` | [Authorization: Bearer <access_token>] | Login the user with their email and password, or skip if Authorization header is set and valid. |
 | ![POST][POST] | /logout | [`email`, `password`] | Authorization: Bearer <access_token> | Logout the user via the Authorization header, or email and password if set and if the Authorization header is invalid. |
-| ![POST][POST] | /register | `first_name`, `last_name`, `email`, `password`, `city_id`, [`phone_number`] |birthdate | Register a new user. |
+| ![POST][POST] | /register | `first_name`, `last_name`, `email`, `password`, `postal_code`, `birthdate`, [`phone_number`] || Register a new user. |
 | ![DELETE][DELETE] | /delete | [`email`, `password`] | [Authorization: Bearer <access_token>] | Delete user with either the email and password or Authorization header. |
 | ![GET][GET] | /user | `user_id` | [Authorization: Bearer <access_token>] | Get the user infos whose id is `user_id` and optionally get personal infos if Authorization header is set and valid. |
 | ![GET][GET] | /cities ||| Get the list of the cities stored in the database (by default all the French cities). |

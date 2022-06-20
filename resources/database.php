@@ -221,7 +221,7 @@ class Database
         string $email,
         string $password,
         string $birthdate,
-        string $city_id,
+        string $postal_code,
         string $phone_number = NULL
     ): void {
         // test if user already exists
@@ -243,9 +243,9 @@ class Database
 
         // return the city_id of a city
         $request = 'SELECT id FROM city
-                      WHERE name = :name';
+                      WHERE "postal_code" = :postal_code';
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':name', $cityName);
+        $statement->bindParam(':postal_code', $postal_code);
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_OBJ);

@@ -128,7 +128,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $birthdate = $_POST['birthdate'];
-        $city_id = $_POST['city_id'];
+        $postal_code = $_POST['postal_code'];
         $phone_number = $_POST['phone_number'];
 
         if (
