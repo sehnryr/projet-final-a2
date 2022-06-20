@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <meta charset="utf-8">
-        <title>Matchmaking</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script type="module" src="public_html/js/register.js" defer></script>
-
+        <title> Sign in </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Paytone+One&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="public_html/css/style.css?rnd=132"/>
     </head>
-    <body>
-        <nav class="">
+    <body class="main-signin-background">
+        <nav class="nav-bar">
             <div>
-                <a href="index.html">Matchmaking</a>
+                <a class="nav-bar-title" href="index.html">🏓Matchmaking</a>
             </div>
             <div>
-                <ul>
-                    <il><a href="index.html">Home</a></il>
-                    <il><a href="explore.html">Explore</a></il>
-                    <il><a href="about.html">About</a></il>
-                    <il><a href="login.html">Sign in</a></il>
+                <ul class="nav-link-list">
+                    <li class="nav-link-list"><a href="index.html">Home</a></li>
+                    <li class="nav-link-list"><a href="explore.html">Explore</a></li>
+                    <li class="nav-link-list"><a href="about.html">About</a></li>
+                    <li class="nav-link-list"><strong><a class="nav-link-activated" id="nav-login-button" href="login.html">Sign in</a></strong></li>
                 </ul>
-            </div>    
+            </div>
         </nav>
         <main>
-            <div>
-                <div>
+            <div class="signin-container">
+                <div class="ls-div-login">
+                    <button id="green-cover-login">
+                        Click here to create an account
+                    </button>
+                    <h2>Login</h2>
                     <form id="loginForm">
                         <input
                         id="emailLogin"
@@ -42,10 +44,14 @@
 							placeholder="Password"
 							required
 						/>
-                        <button type="submit" name="login" class="" >LOGIN</button>
+                        <button type="submit" name="login" class="green-btn" >LOGIN</button>
                     </form>
                 </div>
-                <div>
+                <div class="rs-div-register">
+                    <button id="green-cover-register">
+                        Click here if you already have an account
+                    </button>
+                    <h2>sign in</h2>
                     <form id="formRegister">
                         <input
 							type="text"
@@ -108,9 +114,19 @@
                             placeholder="City"
                             required
                         />
-                        <button type="submit" name="register" class="" >REGISTER</button>
+                        <button type="submit" name="register" class="green-btn" >REGISTER</button>
                     </form>
                 </div>
+                <script> 
+                    addEventListener
+                    $(".green-cover-register").on("click", (event) => {
+                        let tmp_1 = document.getElementsByClassName(".rs-div-register");
+                        tmp_1.style.display="flex";
+                        let tmp_2 = document.getElementsByClassName(".ls-div-login");
+                        tmp_2.style.display="none"
+                        let tmp_3 = document.getElementById
+                    })
+                </script>
             </div>
         </main>
     </body>
