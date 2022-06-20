@@ -136,7 +136,8 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             !isset($last_name) ||
             !isset($email) ||
             !isset($password) ||
-            !isset($birthdate)
+            !isset($birthdate) ||
+            !isset($postal_code)
         ) {
             APIErrors::invalidRequest();
         }
@@ -147,7 +148,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             $email,
             $password,
             $birthdate,
-            $city_id,
+            $postal_code,
             $phone_number ?? NULL
         );
 
