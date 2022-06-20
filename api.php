@@ -207,6 +207,28 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             array('message' => 'User deleted successfully.')
         );
     case 'user' . HTTPRequestMethods::GET:
+        $user_id = $_GET['user_id'];
+
+        if (!isset($user_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        try {
+            $access_token = tryGetAuthorizationToken();
+        } catch (Exception $_) {
+        }
+
+        if (isset($access_token)) {
+            try {
+                $user_info = $db->getUserPersonalInfos($access_token);
+            } catch (AuthenticationException $_) {
+                APIErrors::invalidGrant();
+            }
+        } else {
+            $user_info = $db->getUserInfos($user_id);
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $user_info);
     case 'cities' . HTTPRequestMethods::GET:
         sendResponse(HTTPResponseCodes::Success, $db->getCities());
     case 'sports' . HTTPRequestMethods::GET:
