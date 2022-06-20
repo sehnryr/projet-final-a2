@@ -181,6 +181,33 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             )
         );
     case 'delete' . HTTPRequestMethods::DELETE:
+        parse_str(file_get_contents('php://input'), $_DELETE);
+
+        $email = $_DELETE['email'];
+        $password = $_DELETE['password'];
+
+        // if the email & password are defined, get the access token by the 
+        // database, else get the access token from the header.
+        if (isset($email) && isset($password)) {
+            try {
+                $access_token = $db->getUserAccessToken($email, $password);
+            } catch (AuthenticationException $_) {
+                APIErrors::invalidRequest();
+            }
+        } else {
+            $access_token = getAuthorizationToken();
+        }
+
+        try {
+            $db->deleteUser($access_token);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('message' => 'User deleted successfully.')
+        );
     case 'user' . HTTPRequestMethods::GET:
     case 'cities' . HTTPRequestMethods::GET:
         sendResponse(HTTPResponseCodes::Success, $db->getCities());

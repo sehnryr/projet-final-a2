@@ -26,6 +26,8 @@ pip3 install unidecode faker
 
 *NOTE: Are noted between brackets [] parameters that are optional.*
 
+*NOTE: Parameters have the priority on the authorization header.*
+
 | Method | Endpoint | Parameters | Headers | Description |
 | :---: | :---: | :---: | :---: | :---: |
 | ![POST][POST] | /login | `email`, `password` | [Authorization: Bearer <access_token>] | Login the user with their email and password, or skip if Authorization header is set and valid. |
