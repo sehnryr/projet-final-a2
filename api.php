@@ -27,18 +27,31 @@ header('content-type: application/json; charset=utf-8');
 
 $db = new Database();
 
-function getAuthorizationToken(): string
+function tryGetAuthorizationToken(): ?string
 {
     $authorization = $_SERVER['HTTP_AUTHORIZATION']
         ?? apache_request_headers()['Authorization'];
 
     if (!isset($authorization)) {
-        APIErrors::invalidHeader();
+        throw new InvalidHeaderException();
     }
 
     $authorization = explode(' ', trim($authorization), 2)[1];
 
     if (empty($authorization)) {
+        throw new InvalidGrantException();
+    }
+
+    return $authorization;
+}
+
+function getAuthorizationToken(): string
+{
+    try {
+        $authorization = tryGetAuthorizationToken();
+    } catch (InvalidHeaderException $_) {
+        APIErrors::invalidHeader();
+    } catch (InvalidGrantException $_) {
         APIErrors::invalidGrant();
     }
 
