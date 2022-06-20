@@ -122,6 +122,19 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             )
         );
     case 'logout' . HTTPRequestMethods::POST:
+        $access_token = getAuthorizationToken();
+
+        // Try to remove the access token
+        try {
+            $db->removeUserAccessToken($access_token);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('message' => 'Authorization code delete successfully.')
+        );
     case 'register' . HTTPRequestMethods::POST:
         $first_name = $_POST['first_name'];
         $last_name = $_POST['last_name'];
