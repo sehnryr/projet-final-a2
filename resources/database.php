@@ -188,10 +188,6 @@ class Database
      */
     public function getUserPersonalInfos(string $access_token): ?array
     {
-        if (!$this->verifyUserAccessToken($access_token)) {
-            throw new AuthenticationException();
-        }
-
         $request = 'SELECT "id", "first_name", "last_name", "email", "phone_number", "profile_picture_url", "birthdate" 
                         FROM "user"
                         WHERE "access_token" = :access_token';
