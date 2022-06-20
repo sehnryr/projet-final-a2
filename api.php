@@ -248,14 +248,14 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
         sendResponse(HTTPResponseCodes::Success, $data);
     case 'user_level' . HTTPRequestMethods::POST:
-        $user_id = $_POST['sport_id'];
+        $sport_id = $_POST['sport_id'];
         $level = $_POST['level'];
         $description = $_POST['description'];
 
         $access_token = getAuthorizationToken();
 
         if (
-            !isset($user_id) ||
+            !isset($sport_id) ||
             !isset($level) ||
             !isset($description)
         ) {

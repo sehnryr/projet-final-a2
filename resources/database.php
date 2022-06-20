@@ -375,13 +375,12 @@ class Database
         $user_id = $this->getUserPersonalInfos($access_token)['id'];
 
         // Delete previous record if exists
-        $request = 'DELETE up FROM "user_level" up
-                        LEFT JOIN "user" u ON up."user_id" = u."id"
-                        WHERE u."access_token" = :access_token
-                        AND up."sport_id" = :sport_id';
+        $request = 'DELETE FROM "user_level"
+                        WHERE "user_id" = :user_id
+                        AND "sport_id" = :sport_id';
 
         $statement = $this->PDO->prepare($request);
-        $statement->bindParam(':access_token', $access_token);
+        $statement->bindParam(':user_id', $user_id);
         $statement->bindParam(':sport_id', $sport_id);
         $statement->execute();
 
