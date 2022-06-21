@@ -729,12 +729,38 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->setNote(
+                $access_token,
+                (int) $score,
+                (int) $comment
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'note' . HTTPRequestMethods::PUT:
         parse_str(file_get_contents('php://input'), $_PUT);
         $score = $_PUT['score'];
         $comment = $_PUT['comment'];
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->updateNote(
+                $access_token,
+                isset($score) ? (int) $score : null,
+                isset($comment) ? (int) $comment : null
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'notification' . HTTPRequestMethods::POST:
         $message = $_POST['message'];
         $url = $_POST['url'];

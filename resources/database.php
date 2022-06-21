@@ -1287,4 +1287,108 @@ class Database
 
         return $this->getParticipation($participation_id);
     }
+
+    /**
+     * Get the note of a user.
+     * 
+     * @param int $user_id
+     * 
+     * @throws EntryDoesNotExists
+     */
+    public function getNote(
+        int $user_id
+    ): array {
+        $request = 'SELECT * FROM "note"
+                        WHERE "user_id" = :user_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        return $response;
+    }
+
+    /**
+     * Create a note or override the old one.
+     * 
+     * @param string $access_token
+     * @param int $score
+     * @param string $comment
+     * 
+     * @throws AuthenticationException
+     */
+    public function setNote(
+        string $access_token,
+        int $score,
+        string $comment
+    ): array {
+        $user_id = $this->_getUserId($access_token);
+
+        if ($score < 0 || $score > 5) {
+            throw new PatternException();
+        }
+
+        // Delete previous record if exists
+        $request = 'DELETE FROM "note"
+                        WHERE "user_id" = :user_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->execute();
+
+        // Insert
+        $request = 'INSERT INTO "note"
+                        ("user_id", "score", "comment")
+                        VALUES (:user_id, :score, :comment)
+                        RETURNING "id"';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':score', $score);
+        $statement->bindParam(':comment', $comment);
+        $statement->execute();
+
+        return $this->getNote($user_id);
+    }
+
+    /**
+     * Update the user note.
+     * 
+     * @param string $access_token
+     * @param ?int $score
+     * @param ?string $comment
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function updateNote(
+        string $access_token,
+        ?int $score = null,
+        ?string $comment = null
+    ): array {
+        $user_id = $this->_getUserId($access_token);
+        $data = $this->getNote($user_id);
+
+        $score = $score ?? $data['score'];
+        $comment = $comment ?? $data['comment'];
+
+        $request = 'UPDATE "note"
+                        SET "score" = :score,
+                            "comment" = :comment
+                        WHERE "user_id" = :user_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':score', $score);
+        $statement->bindParam(':comment', $comment);
+        $statement->execute();
+
+        return $this->getNote($user_id);
+    }
 }
