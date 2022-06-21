@@ -463,17 +463,117 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
         sendResponse(HTTPResponseCodes::Success, $data);
     case 'participate' . HTTPRequestMethods::POST:
+        $match_id = $_POST['match_id'];
+
+        if (!isset($match_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'participate' . HTTPRequestMethods::DELETE:
+        parse_str(file_get_contents('php://input'), $_DELETE);
+        $match_id = $_DELETE['match_id'];
+
+        if (!isset($match_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'validate' . HTTPRequestMethods::PUT:
+        parse_str(file_get_contents('php://input'), $_PUT);
+        $participation_id = $_PUT['participation_id'];
+        $value = $_PUT['value'];
+
+        if (!isset($participation_id) || !isset($value)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'score' . HTTPRequestMethods::PUT:
+        parse_str(file_get_contents('php://input'), $_PUT);
+        $participation_id = $_PUT['participation_id'];
+        $value = $_PUT['value'];
+
+        if (!isset($participation_id) || !isset($value)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'teams' . HTTPRequestMethods::GET:
+        $match_id = $_GET['match_id'];
+
+        if (!isset($match_id)) {
+            APIErrors::invalidRequest();
+        }
     case 'team' . HTTPRequestMethods::POST:
+        $match_id = $_POST['match_id'];
+        $name = $_POST['name'];
+
+        if (!isset($match_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'team' . HTTPRequestMethods::PUT:
+        parse_str(file_get_contents('php://input'), $_PUT);
+        $team_id = $_PUT['team_id'];
+        $participation_id = $_PUT['participation_id'];
+
+        if (!isset($team_id) || !isset($participation_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'team' . HTTPRequestMethods::DELETE:
+        parse_str(file_get_contents('php://input'), $_DELETE);
+        $team_id = $_DELETE['team_id'];
+
+        if (!isset($team_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'rename_team' . HTTPRequestMethods::PUT:
+        parse_str(file_get_contents('php://input'), $_PUT);
+        $team_id = $_PUT['team_id'];
+        $name = $_PUT['name'];
+
+        if (!isset($team_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'note' . HTTPRequestMethods::POST:
+        $score = $_POST['score'];
+        $comment = $_POST['comment'];
+
+        if (!isset($score) || !isset($comment)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
     case 'note' . HTTPRequestMethods::PUT:
+        parse_str(file_get_contents('php://input'), $_PUT);
+        $score = $_PUT['score'];
+        $comment = $_PUT['comment'];
+
+        $access_token = getAuthorizationToken();
     case 'notification' . HTTPRequestMethods::POST:
+        $message = $_POST['message'];
+        $url = $_POST['url'];
+
+        if (!isset($message)) {
+            APIErrors::invalidRequest();
+        }
+
+        $access_token = getAuthorizationToken();
+    case 'notification' . HTTPRequestMethods::DELETE:
+        parse_str(file_get_contents('php://input'), $_DELETE);
+        $notification_id = $_DELETE['notification_id'];
+
+        if (!isset($notification_id)) {
+            APIErrors::invalidRequest();
+        }
     default:
         sendResponse(HTTPResponseCodes::NotFound);
         break;
