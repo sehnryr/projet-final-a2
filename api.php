@@ -655,6 +655,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->joinTeam(
+                $access_token,
+                (int) $team_id,
+                (int) $participation_id
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'team' . HTTPRequestMethods::DELETE:
         parse_str(file_get_contents('php://input'), $_DELETE);
         $team_id = $_DELETE['team_id'];

@@ -1234,4 +1234,57 @@ class Database
         $statement->bindParam(':id', $team_id);
         $statement->execute();
     }
+
+    /**
+     * Make a participation join a team.
+     * 
+     * @param string $access_token
+     * @param int $team_id
+     * @param int $participation_id
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function joinTeam(
+        string $access_token,
+        int $team_id,
+        int $participation_id
+    ): array {
+        // check if participation exists
+        $this->getParticipation($participation_id);
+
+        // check if user is organizer
+        $organizer_id = $this->_getUserId($access_token);
+
+        $request = 'SELECT * FROM "participation" p
+                        LEFT JOIN "match" m ON p."match_id" = m."id"
+                        WHERE m."organizer_id" = :organizer_id
+                        AND p."id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':id', $participation_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        // check if team exists
+        $this->getTeam($team_id);
+
+        // update the participation
+        $request = 'UPDATE "participation"
+                        SET "team_id" = :team_id
+                        WHERE "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':team_id', $team_id);
+        $statement->bindParam(':id', $participation_id);
+        $statement->execute();
+
+        return $this->getParticipation($participation_id);
+    }
 }
