@@ -47,6 +47,7 @@ pip3 install unidecode faker
 | ![PUT][PUT] | /match | `match_id`, [`sport_id`, `latitude`, `longitude`, `max_players`, `min_players`, `duration`, `datetime`, `description`, `recommended_level`, `price`] | Authorization: Bearer <access_token> | Edit a match with the specified parameters if Authorization header matches the organizer of the match. |
 | ![DELETE][DELETE] | /match | `match_id` | Authorization: Bearer <access_token> | Delete a match if Authorization header matches the organizer of the match. |
 | ![GET][GET] | /participations | [`match_id`, `user_id`] | Authorization: Bearer <access_token> | Get the participations of a match if the current user is the organizer or get the participations of the user if authenticated. |
+| ![GET][GET] | /participation | `participation_id` || Get the infos on a participation. |
 | ![POST][POST] | /participate | `match_id` | Authorization: Bearer <access_token> | Place a participation to a match if available for the current authenticated user. |
 | ![DELETE][DELETE] | /participate | `match_id` | Authorization: Bearer <access_token> | Resign to participate to a match for the current authenticated user. |
 | ![PUT][PUT] | /validate | `participation_id`, `value` | Authorization: Bearer <access_token> | Validate or invalidate a participation as the organizer of the match associated to the participation. |
