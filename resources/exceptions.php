@@ -29,6 +29,13 @@ class EntryDoesNotExists extends Exception
 }
 
 /**
+ * Thrown when trying to create a duplicate entry.
+ */
+class DuplicateEntryException extends Exception
+{
+}
+
+/**
  * Thrown when value is not correct. E.g. out of bound.
  */
 class PatternException extends Exception

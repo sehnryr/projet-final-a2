@@ -853,6 +853,7 @@ class Database
      * @param int $match_id
      * 
      * @throws AuthenticationException
+     * @throws DuplicateEntryException
      * @throws MatchFullException
      * @throws PDOException
      */
@@ -862,6 +863,23 @@ class Database
     ): void {
         $user_id = $this->_getUserId($access_token);
 
+        // check if participation not exist
+        $request = 'SELECT * FROM "participation"
+                        WHERE "user_id" = :user_id
+                        AND "match_id" = :match_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (!empty($response)) {
+            throw new DuplicateEntryException();
+        }
+
+        // check if match is full
         $match_data = $this->getMatch($match_id);
 
         if (

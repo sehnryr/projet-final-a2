@@ -523,6 +523,8 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             APIErrors::invalidGrant();
         } catch (PDOException $_) {
             APIErrors::invalidRequest();
+        } catch (DuplicateEntryException $_) {
+            APIErrors::invalidRequest();
         } catch (MatchFullException $_) {
             sendResponse(
                 HTTPResponseCodes::BadRequest,
