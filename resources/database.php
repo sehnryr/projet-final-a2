@@ -696,7 +696,6 @@ class Database
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':organizer_id', $organizer_id);
-        $statement->bindParam(':id', $match_id);
         $statement->bindParam(':sport_id', $sport_id);
         $statement->bindParam(':latitude', $latitude);
         $statement->bindParam(':longitude', $longitude);
@@ -710,5 +709,29 @@ class Database
         $statement->execute();
 
         return $this->getMatch($match_id);
+    }
+
+    /**
+     * Delete a match.
+     * 
+     * @param string $access_token
+     * @param int $match_id
+     * 
+     * @throws AuthenticationException
+     */
+    public function deleteMatch(
+        string $access_token,
+        int $match_id
+    ): void {
+        $organizer_id = $this->_getUserId($access_token);
+
+        $request = 'DELETE FROM "match"
+                        WHERE "organizer_id" = :organizer_id
+                        AND "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':id', $match_id);
+        $statement->execute();
     }
 }

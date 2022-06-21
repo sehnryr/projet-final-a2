@@ -428,6 +428,25 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
         sendResponse(HTTPResponseCodes::Success, $data);
     case 'match' . HTTPRequestMethods::DELETE:
+        parse_str(file_get_contents('php://input'), $_DELETE);
+        $match_id = $_DELETE['match_id'];
+
+        $access_token = getAuthorizationToken();
+
+        if (!isset($match_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        try {
+            $db->deleteMatch($access_token, (int) $match_id);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('message' => 'Match deleted successfully.')
+        );
     case 'participations' . HTTPRequestMethods::GET:
         $match_id = $_POST['match_id'];
 
