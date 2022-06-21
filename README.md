@@ -58,6 +58,7 @@ pip3 install unidecode faker
 | ![POST][POST] | /note | `score`, `comment` | Authorization: Bearer <access_token> | Create a review of the app and replace the old one if exists. |
 | ![PUT][PUT] | /note | [`score`, `comment`] | Authorization: Bearer <access_token> | Edit a review for the current user if it exists. |
 | ![POST][POST] | /notification | `message`, [`url`] | Authorization: Bearer <access_token> | Send a notification to a user. Is only applicable if the sender is an organizer and the user participates to one of his matches. |
+| ![DELETE][DELETE] | /notification | `notification_id`| Authorization: Bearer <access_token> | Delete a notification if the user is authenticated. |
 
 
 [GET]: https://img.shields.io/badge/GET-brightgreen?style=flat
