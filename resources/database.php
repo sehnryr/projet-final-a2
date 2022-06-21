@@ -203,7 +203,7 @@ class Database
      */
     public function getUserPersonalInfos(string $access_token): ?array
     {
-        $request = 'SELECT "id", "first_name", "last_name", "email", "phone_number", "profile_picture_url", "birthdate" 
+        $request = 'SELECT "id", "city_id", "first_name", "last_name", "email", "phone_number", "profile_picture_url", "birthdate" 
                         FROM "user"
                         WHERE "access_token" = :access_token';
 
@@ -304,6 +304,117 @@ class Database
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':access_token', $access_token);
         $statement->execute();
+    }
+
+    /**
+     * Update user information.
+     * 
+     * @param string $access_token
+     * @param ?int $city_id
+     * @param ?string $first_name
+     * @param ?string $last_name
+     * @param ?string $email
+     * @param ?string $phone_number
+     * @param ?string $password
+     * @param ?string $profile_picture_url
+     * @param ?DateTime $birthdate
+     * 
+     * @throws AuthenticationException
+     * @throws DuplicateEmailException
+     * @throws PatternException
+     * @throws PDOException
+     */
+    public function updateUser(
+        string $access_token,
+        ?int $city_id = null,
+        ?string $first_name = null,
+        ?string $last_name = null,
+        ?string $email = null,
+        ?string $phone_number = null,
+        ?string $password = null,
+        ?string $profile_picture_url = null,
+        ?DateTime $birthdate = null
+    ): array {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        // Get all the user info including its password hash.
+        $request = 'SELECT * FROM "user"
+                        WHERE "access_token" = :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        $data = (array) $result;
+
+        // replace by their old values if not set.
+        $access_token = $access_token ?? $data['access_token'];
+        $city_id = $city_id ?? $data['city_id'];
+        $first_name = $first_name ?? $data['first_name'];
+        $last_name = $last_name ?? $data['last_name'];
+        $email = strtolower($email ?? $data['email']);
+        $phone_number = $phone_number ?? $data['phone_number'];
+        $profile_picture_url = $profile_picture_url ?? $data['profile_picture_url'];
+        $birthdate = $birthdate ?? $data['birthdate'];
+
+        if (
+            !filter_var($email, FILTER_VALIDATE_EMAIL) ||
+            (isset($password) && strlen($password) < 4) ||
+            strlen($first_name) < 2 ||
+            strlen($last_name) < 2
+        ) {
+            throw new PatternException();
+        }
+
+        // test if user already exists
+        $request = 'SELECT * FROM "user"
+                      WHERE LOWER("email") = :email
+                      AND "access_token" != :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        if ($result) {
+            throw new DuplicateEmailException('Email already exists.');
+        }
+
+        // create new password_hash if password is set
+        $password_hash = $password
+            ? password_hash($password, PASSWORD_BCRYPT)
+            : $data['password_hash'];
+
+        $request = 'UPDATE "user"
+                        SET "city_id" = :city_id,
+                            "first_name" = :first_name,
+                            "last_name" = :last_name,
+                            "email" = :email,
+                            "phone_number" = :phone_number,
+                            "password_hash" = :password_hash,
+                            "profile_picture_url" = :profile_picture_url,
+                            "birthdate" = :birthdate
+                        WHERE "access_token" = :access_token';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':access_token', $access_token);
+        $statement->bindParam(':city_id', $city_id);
+        $statement->bindParam(':first_name', $first_name);
+        $statement->bindParam(':last_name', $last_name);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':phone_number', $phone_number);
+        $statement->bindParam(':password_hash', $password_hash);
+        $statement->bindParam(':profile_picture_url', $profile_picture_url);
+        $statement->bindParam(':birthdate', $birthdate);
+        $statement->execute();
+
+        return $this->getUserPersonalInfos($access_token);
     }
 
     /**

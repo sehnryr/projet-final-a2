@@ -206,6 +206,46 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             HTTPResponseCodes::Success,
             array('message' => 'User deleted successfully.')
         );
+    case 'profile' . HTTPRequestMethods::PUT:
+        parse_str(file_get_contents('php://input'), $_PUT);
+
+        $city_id = $_PUT['city_id'];
+        $first_name = $_PUT['first_name'];
+        $last_name = $_PUT['last_name'];
+        $email = $_PUT['email'];
+        $phone_number = $_PUT['phone_number'];
+        $password = $_PUT['password'];
+        $profile_picture_url = $_PUT['profile_picture_url'];
+        $birthdate = $_PUT['birthdate'];
+
+        $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->updateUser(
+                $access_token,
+                isset($city_id) ? (int) $city_id : null,
+                isset($first_name) ? $first_name : null,
+                isset($last_name) ? $last_name : null,
+                isset($email) ? $email : null,
+                isset($phone_number) ? $phone_number : null,
+                isset($password) ? $password : null,
+                isset($profile_picture_url) ? $profile_picture_url : null,
+                isset($birthdate) ? new DateTime($birthdate) : null
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (DuplicateEmailException $_) {
+            APIErrors::invalidRequest();
+        } catch (PatternException $_) {
+            APIErrors::invalidRequest();
+        } catch (PDOException $_) {
+            APIErrors::invalidHeader();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            $data
+        );
     case 'user' . HTTPRequestMethods::GET:
         $user_id = $_GET['user_id'];
 
