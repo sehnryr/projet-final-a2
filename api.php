@@ -761,15 +761,41 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         sendResponse(HTTPResponseCodes::Success, $data);
+    case 'notifications' . HTTPRequestMethods::GET:
+        $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->getNotifications($access_token);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'notification' . HTTPRequestMethods::POST:
+        $recipient_id = $_POST['recipient_id'];
         $message = $_POST['message'];
         $url = $_POST['url'];
 
-        if (!isset($message)) {
+        if (!isset($recipient_id) || !isset($message)) {
             APIErrors::invalidRequest();
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->sendNotification(
+                $access_token,
+                (int) $recipient_id,
+                $message,
+                isset($url) ? $url : null
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'notification' . HTTPRequestMethods::DELETE:
         parse_str(file_get_contents('php://input'), $_DELETE);
         $notification_id = $_DELETE['notification_id'];
@@ -777,6 +803,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         if (!isset($notification_id)) {
             APIErrors::invalidRequest();
         }
+
+        try {
+            $db->deleteNotification(
+                $access_token,
+                (int) $notification_id,
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('message' => 'Notification deleted successfully.')
+        );
     default:
         sendResponse(HTTPResponseCodes::NotFound);
         break;

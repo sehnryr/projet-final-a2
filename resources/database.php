@@ -1345,8 +1345,7 @@ class Database
         // Insert
         $request = 'INSERT INTO "note"
                         ("user_id", "score", "comment")
-                        VALUES (:user_id, :score, :comment)
-                        RETURNING "id"';
+                        VALUES (:user_id, :score, :comment)';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':user_id', $user_id);
@@ -1390,5 +1389,126 @@ class Database
         $statement->execute();
 
         return $this->getNote($user_id);
+    }
+
+    /**
+     * Get all the notifications of a user.
+     * 
+     * @param 
+     * 
+     * @throws AuthenticationException
+     */
+    public function getNotifications(
+        string $access_token
+    ): array {
+        // check if access_token is valid
+        $user_id = $this->_getUserId($access_token);
+
+        $request = 'SELECT * FROM "notification"
+                        WHERE "user_id" = :user_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->execute();
+
+        return (array) $statement->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * Gets a notification content.
+     * 
+     * @param string $access_token
+     * @param int $notification_id
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function getNotification(
+        string $access_token,
+        int $notification_id
+    ): array {
+        // check if access_token is valid
+        $user_id = $this->_getUserId($access_token);
+
+        $request = 'SELECT * FROM "notification"
+                        WHERE "id" = :id
+                        AND "user_id" = :user_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $notification_id);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        return $response;
+    }
+
+    /**
+     * Sends a notification to a user.
+     * 
+     * @param string $access_token
+     * @param int $recipient_id
+     * @param string $message
+     * @param ?string $url
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function sendNotification(
+        string $access_token,
+        int $recipient_id,
+        string $message,
+        ?string $url = null
+    ): array {
+        // check if access_token is valid
+        $user_id = $this->_getUserId($access_token);
+
+        // check if recipient_id is valid
+        $this->getUserInfos($recipient_id);
+
+        $request = 'INSERT INTO "notification"
+                        ("user_id", "message", "url")
+                        VALUES (:user_id, :message, :url)
+                        RETURNING "id"';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':message', $message);
+        $statement->bindParam(':url', $url);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        $id = $response['id'];
+
+        return $this->getNotification($access_token, $id);
+    }
+
+    /**
+     * Delete a notification.
+     * 
+     * @param string $access_token
+     * @param int $notification_id
+     * 
+     * @throws AuthenticationException
+     */
+    public function deleteNotification(
+        string $access_token,
+        int $notification_id
+    ): void {
+        // check if access_token is valid
+        $user_id = $this->_getUserId($access_token);
+
+        $request = 'DELETE FROM "notification"
+                        WHERE "user_id" = :user_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->execute();
     }
 }
