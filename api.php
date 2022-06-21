@@ -614,6 +614,14 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         if (!isset($match_id)) {
             APIErrors::invalidRequest();
         }
+
+        try {
+            $data = $db->getTeams((int) $match_id);
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'team' . HTTPRequestMethods::POST:
         $match_id = $_POST['match_id'];
         $name = $_POST['name'];

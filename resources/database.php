@@ -1025,7 +1025,32 @@ class Database
         $statement->bindParam(':score', $score);
         $statement->execute();
 
-
         return $this->getParticipation($participation_id);
+    }
+
+    /**
+     * Get the teams associated to a match.
+     * 
+     * @param int $match_id
+     * 
+     * @throws EntryDoesNotExists
+     */
+    public function getTeams(
+        int $match_id
+    ): array {
+        $request = 'SELECT * FROM "team"
+                        WHERE "match_id" = :match_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        return $response;
     }
 }
