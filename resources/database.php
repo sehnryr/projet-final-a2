@@ -1045,6 +1045,32 @@ class Database
         $statement->bindParam(':match_id', $match_id);
         $statement->execute();
 
+        $response = (array) $statement->fetchAll(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        return $response;
+    }
+
+    /**
+     * Get a team's infos.
+     * 
+     * @param int $team_id
+     * 
+     * @throws EntryDoesNotExists
+     */
+    public function getTeam(
+        int $team_id
+    ): array {
+        $request = 'SELECT * FROM "team"
+                        WHERE "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $team_id);
+        $statement->execute();
+
         $response = (array) $statement->fetch(PDO::FETCH_OBJ);
 
         if (empty($response)) {
@@ -1052,5 +1078,160 @@ class Database
         }
 
         return $response;
+    }
+
+    /**
+     * Create a team for a match.
+     * 
+     * @param string $access_token
+     * @param int $match_id
+     * @param ?string $name
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function setTeam(
+        string $access_token,
+        int $match_id,
+        ?string $name = null
+    ): array {
+        $organizer_id = $this->_getUserId($access_token);
+
+        // check if user is organizer
+        $request = 'SELECT * FROM "match"
+                        WHERE "organizer_id" = :organizer_id
+                        AND "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':id', $match_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        $request = 'INSERT INTO "team"
+                        ("name", "match_id")
+                        VALUES (:name, :match_id)
+                        RETURNING "id"';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->bindParam(':name', $name);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        $id = $response['id'];
+
+        return $this->getTeam($id);
+    }
+
+    /**
+     * Rename a team.
+     * 
+     * @param string $access_token
+     * @param int $team_id
+     * @param ?string $name
+     * 
+     * @throws AuthenticationException
+     * @throws DuplicateEntryException
+     * @throws EntryDoesNotExists
+     */
+    public function renameTeam(
+        string $access_token,
+        int $team_id,
+        ?string $name = null
+    ): array {
+        $organizer_id = $this->_getUserId($access_token);
+
+        // check if user is organizer
+        $request = 'SELECT * FROM "team" t
+                        LEFT JOIN "match" m ON t."match_id" = m."id"
+                        WHERE m."organizer_id" = :organizer_id
+                        AND t."id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':id', $team_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        // check if name exists
+        $request = 'SELECT * FROM "team" t
+                        LEFT JOIN "match" m ON t."match_id" = m."id"
+                        WHERE m."organizer_id" = :organizer_id
+                        AND t."name" = :name
+                        AND t."name" IS NOT NULL';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':name', $name);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (!empty($response)) {
+            throw new DuplicateEntryException();
+        }
+
+        $request = 'UPDATE "team"
+                        SET "name" = :name
+                        WHERE "id" = :team_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $team_id);
+        $statement->bindParam(':name', $name);
+        $statement->execute();
+
+        return $this->getTeam($team_id);
+    }
+
+    /**
+     * Delete a team.
+     * 
+     * @param string $access_token
+     * @param int $team_id
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function deleteTeam(
+        string $access_token,
+        int $team_id
+    ): void {
+        $organizer_id = $this->_getUserId($access_token);
+
+        // check if user is organizer
+        $request = 'SELECT * FROM "team" t
+                        LEFT JOIN "match" m ON t."match_id" = m."id"
+                        WHERE m."organizer_id" = :organizer_id
+                        AND t."id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':id', $team_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        $request = 'DELETE FROM "team"
+                        WHERE "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $team_id);
+        $statement->execute();
     }
 }
