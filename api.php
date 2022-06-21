@@ -334,6 +334,54 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             $db->getMatch((int)$match_id)
         );
     case 'match' . HTTPRequestMethods::POST:
+        $sport_id = $_POST['sport_id'];
+        $latitude = $_POST['latitude'];
+        $longitude = $_POST['longitude'];
+        $duration = $_POST['duration'];
+        $datetime = $_POST['datetime'];
+        $description = $_POST['description'];
+        $recommended_level = $_POST['recommended_level'];
+        $max_players = $_POST['max_players'];
+        $min_players = $_POST['min_players'];
+        $price = $_POST['price'];
+
+        $access_token = getAuthorizationToken();
+
+        if (
+            !isset($sport_id) ||
+            !isset($latitude) ||
+            !isset($longitude) ||
+            !isset($duration) ||
+            !isset($datetime) ||
+            !isset($description) ||
+            !isset($recommended_level)
+        ) {
+            APIErrors::invalidRequest();
+        }
+
+        try {
+            $data = $db->setMatch(
+                $access_token,
+                (int) $sport_id,
+                (float) $latitude,
+                (float) $longitude,
+                $duration,
+                new DateTime($datetime),
+                $description,
+                (int) $recommended_level,
+                isset($max_players) ? (int) $max_players : null,
+                isset($min_players) ? (int) $min_players : null,
+                isset($price) ? (float) $price : null
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        }
+
+        if (empty($data)) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'match' . HTTPRequestMethods::PUT:
     case 'match' . HTTPRequestMethods::DELETE:
     case 'participations' . HTTPRequestMethods::GET:

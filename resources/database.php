@@ -9,6 +9,7 @@
 
 require_once 'config.php';
 require_once 'exceptions.php';
+require_once 'common.php';
 
 class Database
 {
@@ -321,6 +322,25 @@ class Database
     }
 
     /**
+     * Get a sport
+     * 
+     * @param int $sport_id
+     */
+    public function getSport(int $sport_id): ?array
+    {
+        $request = 'SELECT * FROM "sport"
+                        WHERE "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $sport_id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return empty($array) ? (array) $result : null;
+    }
+
+    /**
      * Get a list of the sports in the database.
      */
     public function getSports(): array
@@ -531,5 +551,81 @@ class Database
         $data['participation'] = (array) $result;
 
         return (array) $data;
+    }
+
+    /**
+     * Create a match with the specified parameters if Authorization header 
+     * is set.
+     * 
+     * @param string $access_token
+     * @param int $sport_id
+     * @param float $latitude
+     * @param float $longitude
+     * @param int $duration in minutes
+     * @param DateTime $datetime date_parse
+     * @param string $description
+     * @param int $recommended_level
+     * @param ?int $max_players
+     * @param ?int $min_players
+     * @param ?float $price
+     * 
+     * @throws AuthenticationException
+     */
+    public function setMatch(
+        string $access_token,
+        int $sport_id,
+        float $latitude,
+        float $longitude,
+        int $duration,
+        DateTime $datetime,
+        string $description,
+        int $recommended_level,
+        ?int $max_players = null,
+        ?int $min_players = null,
+        ?float $price = null
+    ): array {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        if ($recommended_level < 0 || $recommended_level > 5) {
+            throw new PatternException();
+        }
+
+        $organizer_id = $this->_getUserId($access_token);
+        $sport_data = $this->getSport($sport_id);
+
+        $request = 'INSERT INTO "match" 
+                        ("organizer_id", "sport_id", "latitude", "longitude", "max_players", "min_players", "price", "duration", "datetime", "description", "recommended_level")
+                        VALUES (:organizer_id, :sport_id, :latitude, :longitude, :max_players, :min_players, :price, :duration, :datetime, :description, :recommended_level)
+                        RETURNING "id"';
+
+        $duration = convertToHoursMins($duration);
+        $datetime = $datetime->format('Y-m-d H:i:s');
+        var_dump($max_players);
+
+        $max_players = $max_players ?? $sport_data['default_max_players'];
+        $min_players = $min_players ?? $sport_data['default_min_players'];
+
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':sport_id', $sport_id);
+        $statement->bindParam(':latitude', $latitude);
+        $statement->bindParam(':longitude', $longitude);
+        $statement->bindParam(':duration', $duration);
+        $statement->bindParam(':datetime', $datetime);
+        $statement->bindParam(':description', $description);
+        $statement->bindParam(':recommended_level', $recommended_level);
+        $statement->bindParam(':max_players', $max_players);
+        $statement->bindParam(':min_players', $min_players);
+        $statement->bindParam(':price', $price);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        $id = $response['id'];
+
+        return $this->getMatch((int) $id);
     }
 }
