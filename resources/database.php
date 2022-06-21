@@ -1015,13 +1015,16 @@ class Database
         $score = $score ?? $data['score'];
 
         $request = 'UPDATE "participation"
-                        SET "validation" = :validation
+                        SET "validation" = :validation,
                             "score" = :score
                         WHERE "id" = :id';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':id', $participation_id);
+        $statement->bindParam(':validation', $validation);
+        $statement->bindParam(':score', $score);
         $statement->execute();
+
 
         return $this->getParticipation($participation_id);
     }
