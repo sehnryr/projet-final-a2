@@ -60,7 +60,7 @@ function getAuthorizationToken(): string
 
 function sendResponse(int $responseCode, array $data = null): void
 {
-    $encodedJson = !empty($data) ? json_encode($data) : null;
+    $encodedJson = !empty($data) ? json_encode($data) : json_encode(array());
 
     http_response_code($responseCode);
     die($encodedJson);
@@ -337,12 +337,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'match' . HTTPRequestMethods::PUT:
     case 'match' . HTTPRequestMethods::DELETE:
     case 'participations' . HTTPRequestMethods::GET:
-        $match_id = $_POST['match_id'] ?? null;
-        $access_token = getAuthorizationToken();
-        sendResponse(
-            HTTPResponseCodes::Success,
-            $db->getParticipations($access_token, $match_id)
-        );
+        $match_id = $_POST['match_id'];
+
+        if (!isset($match_id)) {
+            try {
+                $access_token = tryGetAuthorizationToken();
+                $data = $db->getUserParticipations($access_token);
+            } catch (InvalidHeaderException | InvalidGrantException $_) {
+                APIErrors::invalidGrant();
+            }
+        } else {
+            $data = $db->getMatchParticipations((int) $match_id);
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'participate' . HTTPRequestMethods::POST:
     case 'participate' . HTTPRequestMethods::DELETE:
     case 'validate' . HTTPRequestMethods::PUT:

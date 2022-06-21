@@ -32,6 +32,20 @@ class Database
     }
 
     /**
+     * Get a user id from its access_token.
+     * 
+     * @param string $access_token
+     * 
+     * @throws AuthenticationException
+     */
+    private function _getUserId(string $access_token): int
+    {
+        $user_id = $this->getUserPersonalInfos($access_token)['id'];
+
+        return (int) $user_id;
+    }
+
+    /**
      * Gets the password hash of a user.
      * 
      * @param string $email
@@ -184,7 +198,7 @@ class Database
      * 
      * @param string $access_token
      * 
-     * @return array Array of id, first_name, last_name, phone number and email.
+     * @throws AuthenticationException
      */
     public function getUserPersonalInfos(string $access_token): ?array
     {
@@ -397,11 +411,57 @@ class Database
     }
 
     /**
+     * Get the participations of a match.
+     * 
+     * @param int $match_id
+     */
+    public function getMatchParticipations(int $match_id): array
+    {
+        $request = 'SELECT * FROM "participation"
+                        WHERE p."match_id" = :match_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        return (array)$result;
+    }
+
+    /**
+     * Get a user participations.
+     * 
+     * @param string $access_token
+     * 
+     * @throws AuthenticationException
+     */
+    public function getUserParticipations(string $access_token): array
+    {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        $user_id = $this->_getUserId($access_token);
+
+        $request = 'SELECT * FROM "participation"
+                        WHERE "user_id" = :user_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        return (array)$result;
+    }
+
+    /**
      * Get the participations of a match if the current user is the organizer or
      * get the participations of the user if authenticated.
      * 
      * @param string $access_token
-     * @param int [$match_id]
+     * @param ?int $match_id
      * 
      * @throws AuthenticationException
      */
