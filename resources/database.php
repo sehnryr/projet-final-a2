@@ -880,4 +880,47 @@ class Database
         $statement->bindParam(':match_id', $match_id);
         $statement->execute();
     }
+
+    /**
+     * Leave a match.
+     * 
+     * @param string $access_token
+     * @param int $match_id
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function leaveMatch(
+        string $access_token,
+        int $match_id
+    ): void {
+        $user_id = $this->_getUserId($access_token);
+
+        // check if participation exists
+        $request = 'SELECT * FROM "participation"
+                        WHERE "user_id" = :user_id
+                        AND "match_id" = :match_id
+                        AND "validation" = false';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        $request = 'DELETE FROM "participation"
+                        WHERE "user_id" = :user_id
+                        AND "match_id" = :match_id
+                        AND "validation" = false';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+    }
 }

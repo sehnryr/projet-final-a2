@@ -545,6 +545,19 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $db->leaveMatch($access_token, (int) $match_id);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('message' => 'Match leaved successfully.')
+        );
     case 'validate' . HTTPRequestMethods::PUT:
         parse_str(file_get_contents('php://input'), $_PUT);
         $participation_id = $_PUT['participation_id'];
