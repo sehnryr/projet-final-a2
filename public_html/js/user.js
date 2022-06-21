@@ -98,7 +98,7 @@ $(() => {
 
 
         
-        //set user sports and stat
+        //set user sports and stats
         $ajax("api.php/user_level",{
             method: "GET", headers: {
                 Authorization: 'Bearer ' + cookie
@@ -115,6 +115,7 @@ $(() => {
             }
             //GET 
         }).done((data) => {
+
             $("#")
         })
     }

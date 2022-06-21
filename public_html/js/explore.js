@@ -2,6 +2,7 @@ import { createCookie, getCookie } from './utils.js'
 $(() => {
     let cookie = getCookie('mm_session')
     if(cookie.lenght > 0) {
+        //
         $("#searchForm").on("submit", (event) =>{
             event.preventDefault()
             $.ajax("api.php/match", {
@@ -37,6 +38,14 @@ $(() => {
                 }
             })
         })
+        //Fill select with the list of each sport
+        $.ajax("api.php/sport", {
+            method: "GET"
+        }).done((data) => {
+            data.forEach(item => {
+                $('#select-sport').append('<option value="'+item['id']+'">'+item['name_id']+'</option>')
+            });
+        });
     }
 })
 
