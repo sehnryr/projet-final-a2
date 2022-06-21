@@ -941,4 +941,88 @@ class Database
         $statement->bindParam(':match_id', $match_id);
         $statement->execute();
     }
+
+    /**
+     * Get the infos on a participation.
+     * 
+     * @param int $participation_id
+     * 
+     * @throws EntryDoesNotExists
+     */
+    public function getParticipation(int $participation_id): array
+    {
+        $request = 'SELECT * FROM "participation"
+                        WHERE "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $participation_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        return $response;
+    }
+
+    /**
+     * Set statuses on a participation. E.g. the validation and the score.
+     * Can only be done by the organizer of the match.
+     * 
+     * @param string $access_token
+     * @param int $participation_id
+     * @param ?bool $validation
+     * @param ?int $score
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function updateParticipation(
+        string $access_token,
+        int $participation_id,
+        ?bool $validation = null,
+        ?int $score = null
+    ): array {
+        if (!$this->verifyUserAccessToken($access_token)) {
+            throw new AuthenticationException();
+        }
+
+        $organizer_id = $this->_getUserId($access_token);
+
+        // check if participation exists and if access token is from an 
+        // organizer
+        $request = 'SELECT * FROM "participation" p
+                        LEFT JOIN "match" m ON p."match_id" = m."id"
+                        WHERE p."id" = :id
+                        AND m."organizer_id" = :organizer_id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $participation_id);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->execute();
+
+        $response = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        if (empty($response)) {
+            throw new EntryDoesNotExists();
+        }
+
+        $data = $response;
+
+        $validation = $validation ?? $data['validation'];
+        $score = $score ?? $data['score'];
+
+        $request = 'UPDATE "participation"
+                        SET "validation" = :validation
+                            "score" = :score
+                        WHERE "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':id', $participation_id);
+        $statement->execute();
+
+        return $this->getParticipation($participation_id);
+    }
 }

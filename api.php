@@ -508,6 +508,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         sendResponse(HTTPResponseCodes::Success, $data);
+    case 'participation' . HTTPRequestMethods::GET:
+        $participation_id = $_GET['participation_id'];
+
+        if (!isset($participation_id)) {
+            APIErrors::invalidRequest();
+        }
+
+        try {
+            $data = $db->getParticipation((int) $participation_id);
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'participate' . HTTPRequestMethods::POST:
         $match_id = $_POST['match_id'];
 
@@ -570,6 +584,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->updateParticipation(
+                $access_token,
+                (int) $participation_id,
+                validation: (bool) $value,
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'score' . HTTPRequestMethods::PUT:
         parse_str(file_get_contents('php://input'), $_PUT);
         $participation_id = $_PUT['participation_id'];
