@@ -148,7 +148,6 @@ def generate_users_dataset(sql_only):
                     first_name.lower().replace(" ", "")
                     + last_name.lower().replace(" ", "")
                     + str(random.randint(0, city_id))
-                    + str(password_hash)[-3:]
                     + "@"
                     + fake.safe_domain_name()
                 )
