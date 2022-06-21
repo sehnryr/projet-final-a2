@@ -230,6 +230,12 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         sendResponse(HTTPResponseCodes::Success, $user_info);
     case 'cities' . HTTPRequestMethods::GET:
         sendResponse(HTTPResponseCodes::Success, $db->getCities());
+    case 'sport' . HTTPRequestMethods::GET:
+        $sport_id = $_GET['sport_id'];
+        if (!isset($sport_id)) {
+            APIErrors::invalidRequest();
+        }
+        sendResponse(HTTPResponseCodes::Success, $db->getSport((int) $sport_id));
     case 'sports' . HTTPRequestMethods::GET:
         sendResponse(HTTPResponseCodes::Success, $db->getSports());
     case 'user_level' . HTTPRequestMethods::GET:
