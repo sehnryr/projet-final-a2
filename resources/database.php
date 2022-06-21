@@ -734,4 +734,39 @@ class Database
         $statement->bindParam(':id', $match_id);
         $statement->execute();
     }
+
+    /**
+     * Create a participation.
+     * 
+     * @param string $access_token
+     * @param int $match_id
+     * 
+     * @throws AuthenticationException
+     * @throws MatchFullException
+     * @throws PDOException
+     */
+    public function joinMatch(
+        string $access_token,
+        int $match_id
+    ): void {
+        $user_id = $this->_getUserId($access_token);
+
+        $match_data = $this->getMatch($match_id);
+
+        if (
+            count($match_data) > 1 &&
+            $match_data['max_players'] <= count($match_data['participation'])
+        ) {
+            throw new MatchFullException();
+        }
+
+        $request = 'INSERT INTO "participation"
+                        ("user_id", "match_id", "validation", "score")
+                        VALUES (:user_id, :match_id, false, 0)';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':user_id', $user_id);
+        $statement->bindParam(':match_id', $match_id);
+        $statement->execute();
+    }
 }

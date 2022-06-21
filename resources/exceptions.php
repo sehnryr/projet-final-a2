@@ -36,6 +36,13 @@ class PatternException extends Exception
 }
 
 /**
+ * Thrown when trying to join a complete match.
+ */
+class MatchFullException extends Exception
+{
+}
+
+/**
  * Thrown when the authorization code is invalid or expired.
  */
 class InvalidGrantException extends Exception

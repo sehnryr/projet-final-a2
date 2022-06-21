@@ -476,6 +476,26 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $db->joinMatch($access_token, (int) $match_id);
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (PDOException $_) {
+            APIErrors::invalidRequest();
+        } catch (MatchFullException $_) {
+            sendResponse(
+                HTTPResponseCodes::BadRequest,
+                array(
+                    'message' => 'Match is full. Cannot join.'
+                )
+            );
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('message' => 'Match successfully joined.')
+        );
     case 'participate' . HTTPRequestMethods::DELETE:
         parse_str(file_get_contents('php://input'), $_DELETE);
         $match_id = $_DELETE['match_id'];
