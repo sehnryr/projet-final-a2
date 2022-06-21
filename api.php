@@ -631,6 +631,20 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->setTeam(
+                $access_token,
+                (int) $match_id,
+                isset($name) ? $name : null
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'team' . HTTPRequestMethods::PUT:
         parse_str(file_get_contents('php://input'), $_PUT);
         $team_id = $_PUT['team_id'];
@@ -650,6 +664,22 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $db->deleteTeam(
+                $access_token,
+                (int) $team_id
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('message' => 'Team deleted successfully.')
+        );
     case 'rename_team' . HTTPRequestMethods::PUT:
         parse_str(file_get_contents('php://input'), $_PUT);
         $team_id = $_PUT['team_id'];
@@ -660,6 +690,22 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         }
 
         $access_token = getAuthorizationToken();
+
+        try {
+            $data = $db->renameTeam(
+                $access_token,
+                (int) $team_id,
+                isset($name) ? $name : null
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (DuplicateEntryException $_) {
+            APIErrors::invalidRequest();
+        } catch (EntryDoesNotExists $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'note' . HTTPRequestMethods::POST:
         $score = $_POST['score'];
         $comment = $_POST['comment'];
