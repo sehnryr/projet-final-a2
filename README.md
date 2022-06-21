@@ -36,6 +36,7 @@ pip3 install unidecode faker
 | ![DELETE][DELETE] | /delete || Authorization: Bearer <access_token> | Delete user with the Authorization header. |
 | ![GET][GET] | /user | `user_id` | [Authorization: Bearer <access_token>] | Get the user infos whose id is `user_id` and optionally get personal infos if Authorization header is set and valid. |
 | ![GET][GET] | /cities ||| Get the list of the cities stored in the database (by default all the French cities). |
+| ![GET][GET] | /sport | `sport_id` || Get the infos on a sport. |
 | ![GET][GET] | /sports ||| Get the list of the sports stored in the database. |
 | ![GET][GET] | /user_level | `user_id`, `sport_id` || Get the user' level whose id is `user_id` if Authorization header is valid. |
 | ![POST][POST] | /user_level | `sport_id`, `level`, `description` | Authorization: Bearer <access_token> | Create one' level in one sport which id is `sport_id` if Authorization header is valid. |
@@ -53,7 +54,7 @@ pip3 install unidecode faker
 | ![POST][POST] | /team | `match_id`, [`name`] | Authorization: Bearer <access_token> | Create a team for a match. |
 | ![PUT][PUT] | /team | `team_id`, `participation_id` | Authorization: Bearer <access_token> | Add user to a team as organizer if the participation and valid. |
 | ![DELETE][DELETE] | /team | `team_id` | Authorization: Bearer <access_token> | Delete a team and reset all participations `team_id`. |
-| ![PUT][PUT] | /rename_team | `team_id` | Authorization: Bearer <access_token> | Rename a team with an unused name as organizer. |
+| ![PUT][PUT] | /rename_team | `team_id`, `name` | Authorization: Bearer <access_token> | Rename a team with an unused name as organizer. |
 | ![POST][POST] | /note | `score`, `comment` | Authorization: Bearer <access_token> | Create a review of the app and replace the old one if exists. |
 | ![PUT][PUT] | /note | [`score`, `comment`] | Authorization: Bearer <access_token> | Edit a review for the current user if it exists. |
 | ![POST][POST] | /notification | `message`, [`url`] | Authorization: Bearer <access_token> | Send a notification to a user. Is only applicable if the sender is an organizer and the user participates to one of his matches. |
