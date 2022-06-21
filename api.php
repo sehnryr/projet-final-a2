@@ -383,6 +383,50 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
 
         sendResponse(HTTPResponseCodes::Success, $data);
     case 'match' . HTTPRequestMethods::PUT:
+        parse_str(file_get_contents('php://input'), $_PUT);
+
+        $match_id = $_PUT['match_id'];
+        $sport_id = $_PUT['sport_id'];
+        $latitude = $_PUT['latitude'];
+        $longitude = $_PUT['longitude'];
+        $duration = $_PUT['duration'];
+        $datetime = $_PUT['datetime'];
+        $description = $_PUT['description'];
+        $recommended_level = $_PUT['recommended_level'];
+        $max_players = $_POST['max_players'];
+        $min_players = $_PUT['min_players'];
+        $price = $_PUT['price'];
+
+        $access_token = getAuthorizationToken();
+
+        if (
+            !isset($match_id)
+        ) {
+            APIErrors::invalidRequest();
+        }
+
+        try {
+            $data = $db->updateMatch(
+                $access_token,
+                isset($match_id) ? (int) $match_id : null,
+                isset($sport_id) ? (int) $sport_id : null,
+                isset($latitude) ? (float) $latitude : null,
+                isset($longitude) ? (float) $longitude : null,
+                isset($duration) ? $duration : null,
+                isset($datetime) ? new DateTime($datetime) : null,
+                isset($description) ? $description : null,
+                isset($recommended_level) ? (int) $recommended_level : null,
+                isset($max_players) ? (int) $max_players : null,
+                isset($min_players) ? (int) $min_players : null,
+                isset($price) ? (float) $price : null
+            );
+        } catch (AuthenticationException $_) {
+            APIErrors::invalidGrant();
+        } catch (PatternException $_) {
+            APIErrors::invalidRequest();
+        }
+
+        sendResponse(HTTPResponseCodes::Success, $data);
     case 'match' . HTTPRequestMethods::DELETE:
     case 'participations' . HTTPRequestMethods::GET:
         $match_id = $_POST['match_id'];

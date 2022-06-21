@@ -628,4 +628,87 @@ class Database
 
         return $this->getMatch((int) $id);
     }
+
+    /**
+     * Update a match columns.
+     * 
+     * @param string $access_token
+     * @param int $match_id
+     * @param ?int $sport_id
+     * @param ?float $latitude
+     * @param ?float $longitude
+     * @param ?int $duration in minutes
+     * @param ?DateTime $datetime date_parse
+     * @param ?string $description
+     * @param ?int $recommended_level
+     * @param ?int $max_players
+     * @param ?int $min_players
+     * @param ?float $price
+     * 
+     * @throws AuthenticationException
+     * @throws EntryDoesNotExists
+     */
+    public function updateMatch(
+        string $access_token,
+        int $match_id,
+        ?int $sport_id = null,
+        ?float $latitude = null,
+        ?float $longitude = null,
+        ?int $duration = null,
+        ?DateTime $datetime = null,
+        ?string $description = null,
+        int $recommended_level = null,
+        ?int $max_players = null,
+        ?int $min_players = null,
+        ?float $price = null
+    ): array {
+        $organizer_id = $this->_getUserId($access_token);
+        $data = $this->getMatch($match_id);
+
+        if (empty($data)) {
+            throw new EntryDoesNotExists();
+        }
+
+        $sport_id = $sport_id ?? $data['sport_id'];
+        $latitude = $latitude ?? $data['latitude'];
+        $longitude = $longitude ?? $data['longitude'];
+        $duration = $duration ?? $data['duration'];
+        $datetime = $datetime ?? $data['datetime'];
+        $description = $description ?? $data['description'];
+        $recommended_level = $recommended_level ?? $data['recommended_level'];
+        $max_players = $max_players ?? $data['max_players'];
+        $min_players = $min_players ?? $data['min_players'];
+        $price = $price ?? $data['price'];
+
+        $request = 'UPDATE "match"
+                        SET "sport_id" = :sport_id,
+                            "latitude" = :latitude,
+                            "longitude" = :longitude,
+                            "max_players" = :max_players,
+                            "min_players" = :min_players,
+                            "price" = :price,
+                            "duration" = :duration,
+                            "datetime" = :datetime,
+                            "description" = :description,
+                            "recommended_level" = :recommended_level
+                        WHERE "organizer_id" = :organizer_id
+                        AND "id" = :id';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':organizer_id', $organizer_id);
+        $statement->bindParam(':id', $match_id);
+        $statement->bindParam(':sport_id', $sport_id);
+        $statement->bindParam(':latitude', $latitude);
+        $statement->bindParam(':longitude', $longitude);
+        $statement->bindParam(':duration', $duration);
+        $statement->bindParam(':datetime', $datetime);
+        $statement->bindParam(':description', $description);
+        $statement->bindParam(':recommended_level', $recommended_level);
+        $statement->bindParam(':max_players', $max_players);
+        $statement->bindParam(':min_players', $min_players);
+        $statement->bindParam(':price', $price);
+        $statement->execute();
+
+        return $this->getMatch($match_id);
+    }
 }
