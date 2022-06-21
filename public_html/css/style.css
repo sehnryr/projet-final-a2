@@ -197,6 +197,24 @@ input {
     color: #fff;
     display:flex;
 }
+/* User profile page*/
+.profile{
+    background-color: #ebebeb;
+    margin-left: 10%;
+    width: 80%;
+    margin-right: 10%;
+}
+/*Match Card*/
+.matches{
+    display: flex;
+    flex-direction: row;
+    background-color: #EBEBEB;
+    justify-content: space-between;
+    margin-left: 10%;
+    width: 80%;
+    margin-right: 10%;
+}
+
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
     
