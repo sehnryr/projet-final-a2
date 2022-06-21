@@ -25,7 +25,121 @@
         <main>
             <h1>New Match</h1>
             <div>
-                
+                <form id="newMatchForm">
+                    <div>
+                        <div>
+                            <input
+                                id="football"
+                                type="radio"
+                                name="new_match_sport"
+                                value="football"
+                            />
+                            <label for="football">⚽</label>
+                            <input
+                                id="basketball"
+                                type="radio"
+                                name="new_match_sport"
+                                value="basketball"
+                            />
+                            <label for="basketball">🏀</label>
+                            <input
+                                id="ping_pong"
+                                type="radio"
+                                name="new_match_sport"
+                                value="ping_pong"
+                            />
+                            <label for="ping_pong">🏓</label>
+                            <input
+                                id="badminton"
+                                type="radio"
+                                name="new_match_sport"
+                                value="badminton"
+                            />
+                            <label for="badminton">🏸</label>
+                            <input
+                                id="volleyball"
+                                type="radio"
+                                name="new_match_sport"
+                                value="volleyball"
+                            />
+                            <label for="volleyball">🏐</label>
+                            <input
+                                id="rugby"
+                                type="radio"
+                                name="new_match_sport"
+                                value="rugby"
+                            />
+                            <label for="rugby">🏉</label>
+                        </div>
+                        <div>
+                            <label for="min_players">Minimum number of player</label>
+                            <input
+                                id="min_players"
+                                type="number"
+                                name="min_players"
+                                placeholder="0"
+                            />
+                            <label for="max_players">Maximum number of player</label>
+                            <input
+                                id="max_players"
+                                type="number"
+                                name="max_players"
+                                placeholder="0"
+                            />
+                            <label for="price">Inscription fee</label>
+                            <input
+                                id="price"
+                                type="number"
+                                name="price"
+                                placeholder="0.00€"
+                            />
+                        </div>
+                    </div>
+                        <label for="datetime">Match date</label>
+                        <input
+                            id="datetime"
+                            type="date"
+                            name="datetime"
+                        />
+                        <label for="duration">Match duration</label>
+                        <input
+                            id="duration"
+                            type="number"
+                            name="duration"
+                            placeholder="2h30"
+                        />
+                        <label for="description">Description of the match</label>
+                        <input
+                            id="description"
+                            type="text"
+                            name="description"
+                            placeholder="Description of the match"
+                        />
+                    <div>
+                        <label for="recommended_level">Recommend a level for this match</label>
+                        <select id="recommended_level" name="recommended_level">
+                            <option value="beginner">
+                                Beginner
+                            </option>
+                            <option value="intermediate">
+                                Intermediate
+                            </option>
+                            <option value="advanced">
+                                Advanced
+                            </option>
+                            <option value="master">
+                                Master
+                            </option>
+                            <option value="professional">
+                                professional
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <input/>
+                        <button type="submit" name="new_match" class="green-btn">CREATE</button>
+                    </div>
+                </form>
             </div>
             <h1>My Match</h1>
             <div>
