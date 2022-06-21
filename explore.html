@@ -19,21 +19,46 @@
             </div>    
         </nav>
         <div>
-            <form>
+            <form id="searchForm">
                 <input
-                    id="search"
-                    name="search"
+                    id="search_place"
+                    name="search_place"
                     type="text"
-                    placeholder="search"
+                    placeholder="City"
                 />
                 <input
-                    id="matchDate"
-                    name="matchDate"
+                    id="match_date"
+                    name="match_date"
                     type="date"
                 />
-                <button type="button"  name="date-7">+7</button>
-                <button type="button"  name="date-15">+15</button>
-                <button type="button"  name="date-30">+30</button>
+                <select if="select_sport" name="select_sport">
+                    <option value="football">Football</option>
+                    <option value="basketball">Basketball</option>
+                    <option value="ping_pong">Ping Pong</option>
+                    <option value="volleyball">Volleyball</option>
+                    <option value="badminton">Badminton</option>
+                    <option value="rugby">Rugby</option>
+                </select>
+                <select id="recommended_level" name="recommended_level">
+                    <option value="beginner">
+                        Beginner
+                    </option>
+                    <option value="intermediate">
+                        Intermediate
+                    </option>
+                    <option value="advanced">
+                        Advanced
+                    </option>
+                    <option value="master">
+                        Master
+                    </option>
+                    <option value="professional">
+                        professional
+                    </option>
+                </select>
+                <button type="button" id="date-7" name="date-7">+7</button>
+                <button type="button" id="date-15" name="date-15">+15</button>
+                <button type="button" id="date-30" name="date-30">+30</button>
                 <button type ="submit" name="searchMatch">Search</button>
             </form>
         </div>
