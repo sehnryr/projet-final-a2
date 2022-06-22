@@ -1,161 +1,57 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title> Sign in </title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Paytone+One&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="public_html/css/style.css?rnd=132"/>
-    </head>
-    <body class="main-signin-background">
-        <nav class="nav-bar">
-            <div>
-                <a class="nav-bar-title" href="index.html">🏓Matchmaking</a>
-            </div>
-            <div>
-                <ul class="nav-link-list">
-                    <li class="nav-link-list"><a href="index.html">Home</a></li>
-                    <li class="nav-link-list"><a href="explore.html">Explore</a></li>
-                    <li class="nav-link-list"><a href="about.html">About</a></li>
-                    <li class="nav-link-list"><strong><a class="nav-link-activated" id="nav-login-button" href="login.html">Sign in</a></strong></li>
-                </ul>
-            </div>
-        </nav>
-        <main>
-            <div class="signin-container">
-                <div class="ls-div-form">
-                    <button id="green-cover-login"
-                        onclick=" 
-                            document.getElementsByClassName('rs-div-register').style.display='none';
-                            document.getElementsByClassName('ls-div-login').style.display='block';
-                            document.getElementById('green-cover-login').style.display='none';
-                            document.getElementById('green-cover-register').style.display='block';
-                    ">
-                        Click here to create an account
-                    </button>
-                    <div class="ls-div-login">
-                        <h2>Login</h2>
-                        <form id="loginForm">
-                            <input
-                            id="emailLogin"
-                            type="text"
-                            class=""
-                            placeholder="Mail Addresse"
-                            required
-                            />
-                            <input
-                                type="password"
-                                id="passwordLogin"
-                                class=""
-                                placeholder="Password"
-                                required
-                            />
-                            <div>
-                                <button type="submit" name="login" class="green-btn" >LOGIN</button>
-                                <button class="green-btn" id="display-register-form"
-                                    onclick=" 
-                                        document.getElementsByClassName('rs-div-register').style.display='block';
-                                        document.getElementsByClassName('ls-div-login').style.display='none';
-                                        document.getElementById('display-register-form').style.display='none';
-                                        document.getElementById('display-login-form').style.display='block';
-                                    ">
-                                    Create an account
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="rs-div-form">
-                    <button id="green-cover-register"
-                        onclick=" 
-                            document.getElementsByClassName('rs-div-register').style.display='block';
-                            document.getElementsByClassName('ls-div-login').style.display='none';
-                            document.getElementById('green-cover-login').style.display='block';
-                            document.getElementById('green-cover-register').style.display='none';
-                    ">
-                        Click here if you already have an account
-                    </button>
-                    <div class="rs-div-register">
-                        <h2>sign in</h2>
-                        <form id="formRegister">
-                            <input
-                                type="text"
-                                class=""
-                                placeholder="Firstname"
-                                id="firstnameRegister"
-                                name="firstnameRegister"
-                                required
-                            />
-                            <input
-                                type="text"
-                                class=""
-                                placeholder="Lastname"
-                                id="lastnameRegister"
-                                name="lastnameRegister"
-                                required
-                            />
-                            <input
-                                id="emailRegister"
-                                type="text"
-                                name="emailRegister"
-                                class=""
-                                placeholder="Mail Addresse"
-                                required
-                            />
-                            <input
-                                type="text"
-                                id="passwordRegister"
-                                name="passwordRegister"
-                                class=""
-                                placeholder="Password"
-                                required
-                            />
-                            <input
-                                type="password"
-                                id="passwordRegisterConf"
-                                name="passwordRegisterConf"
-                                class=""
-                                placeholder="Password verification"
-                                required
-                            />
-                            <input
-                                type="text"
-                                id="phoneRegister"
-                                name="phoneRegister"
-                                placeholder="Phone number"
-                                required
-                            />
-                            <input
-                                type="date"
-                                id="birthdateRegister"
-                                name="birthdateRegister"
-                                placeholder="Birthdate"
-                                required
-                            />
-                            <input
-                                type="text"
-                                id="cityRegister"
-                                name="cityRegister"
-                                placeholder="City"
-                                required
-                            />
-                            <div>
-                                <button type="submit" name="register" class="green-btn" >REGISTER</button>
-                                <button class="green-btn" id="display-login-form"
-                                    onclick=" 
-                                        document.getElementsByClassName('rs-div-register').style.display='none';
-                                        document.getElementsByClassName('ls-div-login').style.display='block';
-                                        document.getElementById('display-register-form').style.display='block';
-                                        document.getElementById('display-login-form').style.display='none';
-                                ">
-                                    Already have an account
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </body>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sign in</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Paytone+One&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="public_html/css/login.css" />
+	</head>
+	<body>
+		<main>
+			<section>
+				<h2>Login</h2>
+				<form>
+					<input id="emailLogin" type="text" placeholder="E-mail" required />
+					<input id="passwordLogin" type="password" placeholder="Password" required />
+					<button>Login</button>
+				</form>
+			</section>
+			<section>
+				<h2>Register</h2>
+				<form>
+					<input
+						type="text"
+						placeholder="Firstname"
+						id="firstnameRegister"
+						name="firstnameRegister"
+						required
+					/>
+					<input type="text" placeholder="Lastname" id="lastnameRegister" name="lastnameRegister" required />
+					<input id="emailRegister" type="text" name="emailRegister" placeholder="E-mail" required />
+					<input type="text" id="passwordRegister" name="passwordRegister" placeholder="Password" required />
+					<input
+						type="password"
+						id="passwordRegisterConf"
+						name="passwordRegisterConf"
+						placeholder="Password verification"
+						required
+					/>
+					<input type="text" id="phoneRegister" name="phoneRegister" placeholder="Phone number" required />
+					<input
+						type="date"
+						id="birthdateRegister"
+						name="birthdateRegister"
+						placeholder="Birthdate"
+						required
+					/>
+					<button>Register</button>
+				</form>
+			</section>
+		</main>
+	</body>
 </html>
