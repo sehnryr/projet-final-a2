@@ -224,6 +224,23 @@ section{
     margin-right: 10%;
     padding: 15px 15px 15px 15px;
 }
+/*Explore Page*/
+    /*Search Form*/
+    #searchForm {
+        background-color: #fff;
+        border-radius: 15px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #ebebeb;
+    }
+    #searchForm button {
+        background-color: #fff;
+        border-radius: 0px;
+        border-style: solid;
+        border-color: #ebebeb;
+        border-width: 2px;
+        width: 0em;
+    }
 
 
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
