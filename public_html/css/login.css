@@ -54,3 +54,7 @@ main > section > form {
 	display: flex;
 	flex-direction: column;
 }
+
+main > section > form > *:not(:last-child) {
+	margin-bottom: 3px;
+}
