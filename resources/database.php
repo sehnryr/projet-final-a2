@@ -256,8 +256,8 @@ class Database
         string $email,
         string $password,
         string $birthdate,
-        string $postal_code,
-        ?string $phone_number = NULL
+        ?string $postal_code = null,
+        ?string $phone_number = null
     ): void {
 
         $email = strtolower($email);

@@ -186,7 +186,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         try {
             $access_token = $db->getUserAccessToken($email, $password);
         } catch (AuthenticationException $_) {
-            APIErrors::invalidRequest();
+            APIErrors::invalidGrant();
         }
 
         // Send response code 200: success
