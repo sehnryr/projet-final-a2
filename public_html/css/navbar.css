@@ -8,6 +8,7 @@ nav {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	box-shadow: 5px 0 10px gray;
 }
 
 nav a:link,
