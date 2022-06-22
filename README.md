@@ -30,6 +30,7 @@ pip3 install unidecode faker
 
 | Method | Endpoint | Parameters | Headers | Description |
 | :---: | :---: | :---: | :---: | :---: |
+| ![GET][GET] | /check_email | `email` || Check if email is either valid or does not exist in the database. |
 | ![POST][POST] | /login | `email`, `password` | [Authorization: Bearer <access_token>] | Login the user with their email and password, or skip if Authorization header is set and valid. |
 | ![POST][POST] | /logout | [`email`, `password`] | Authorization: Bearer <access_token> | Logout the user via the Authorization header, or email and password if set and if the Authorization header is invalid. |
 | ![POST][POST] | /register | `first_name`, `last_name`, `email`, `password`, `postal_code`, `birthdate`, [`phone_number`] || Register a new user. |

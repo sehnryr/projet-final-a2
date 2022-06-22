@@ -113,6 +113,26 @@ class Database
     }
 
     /**
+     * Checks if email is unique and is correct.
+     * 
+     * @param string $email
+     */
+    public function checkEmail(
+        string $email
+    ): bool {
+        $request = 'SELECT * FROM "user"
+                        WHERE "email" = :email';
+
+        $statement = $this->PDO->prepare($request);
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+
+        $result = (array) $statement->fetch(PDO::FETCH_OBJ);
+
+        return filter_var($email, FILTER_VALIDATE_EMAIL) && count($result) == 0;
+    }
+
+    /**
      * Creates an access token if credentials are valid.
      * 
      * @param string $email

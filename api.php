@@ -108,7 +108,13 @@ class APIErrors
 }
 
 switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
+    case 'check_email' . HTTPRequestMethods::GET:
+        $email = $_GET['email'];
 
+        sendResponse(
+            HTTPResponseCodes::Success,
+            array('valid' => $db->checkEmail($email))
+        );
     case 'login' . HTTPRequestMethods::POST:
         $email = $_POST['email'];
         $password = $_POST['password'];
