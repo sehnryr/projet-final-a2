@@ -127,9 +127,9 @@ class Database
         $statement->bindParam(':email', $email);
         $statement->execute();
 
-        $result = (array) $statement->fetch(PDO::FETCH_OBJ);
+        $result = $statement->fetch(PDO::FETCH_OBJ);
 
-        return filter_var($email, FILTER_VALIDATE_EMAIL) && count($result) == 0;
+        return filter_var($email, FILTER_VALIDATE_EMAIL) && empty($result);
     }
 
     /**
