@@ -78,21 +78,30 @@
                 attribution: '© nhentai.map'
             }).addTo(map);
 
-            var marker_1 = L.marker([47.21725, -1.55336]).addTo(map); // add a marker to the map
+            var marker_2 = L.marker([47.21725, -1.55336]).addTo(map); // add a marker to the map
             //var marker_2 = L.marker([48.85341, 2.3488]).addTo(map); // add a marker to the map
-            marker.bindPopup("<b>Hello world!</b><br>I am a popup."); //bind popup on a marker
+            marker_2.bindPopup("<b>Hello world!</b><br>I am a popup."); //bind popup on a marker
 
             //Icon class
+            /*
             var SportIcon = L.Icon.extend({
                 options: {
-                iconSize:     [74, 101], //size of the icon
+                iconSize:     [73, 100], //size of the icon
                 iconAnchor:   [37, 98], //point of the icon which will correspond to marker's location
                 popupAnchor:  [-3, -76] //point of the icon which the popup should open relative to the iconAnchor
                 }
             });
-            var basketballIcon = new SportIcon({iconUrl: "public_html/img/basketballIcon.png"}) //initialize new icon icon
             
-            var marker_2 = L.marker([48.85341, 2.3488], {icon:basketballIcon}).addTo(map).bindPopup("BasketBall Match 🏀");
+            var basketballIcon = new SportIcon({iconUrl: "https://github.com/sehnryr/projet-final-a2/blob/cdd27534723beabb913e7350637c2fbfd8c85d33/public_html/img/basketballIcon.png"}); //initialize new icon icon
+
+            L.marker([48.85341, 2.3488], {icon: basketballIcon}).addTo(map).bindPopup("BasketBall Match 🏀");;
+            */
+            const basketIcon = L.icon({
+                iconUrl: 'public_html/img/basketballIcon.png',
+                iconSize: [75, 105],
+            });
+
+            const marker_1 = L.marker([48.85341, 2.3488], {icon: basketIcon}).addTo(map);
         </script>
         <script href="public_html/js/explore.js"></script>
     </body>
