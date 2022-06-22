@@ -129,9 +129,10 @@ nav li a:hover{
     font-weight: 900;
     font-size: 36px;
     width: 215px;
-    height: 35px;
+    height: 50px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .green-btn:hover {
@@ -198,6 +199,13 @@ input {
     display:flex;
 }
 /* User profile page*/
+
+section{
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 10%;
+}
+
 .profile{
     background-color: #ebebeb;
     margin-left: 10%;
@@ -205,14 +213,16 @@ input {
     margin-right: 10%;
 }
 /*Match Card*/
-.matches{
+.matchcard{
     display: flex;
     flex-direction: row;
-    background-color: #EBEBEB;
+    background-color: #ebebeb;
     justify-content: space-between;
+    align-items: center;
     margin-left: 10%;
     width: 80%;
     margin-right: 10%;
+    padding: 15px 15px 15px 15px;
 }
 
 
@@ -246,6 +256,26 @@ input {
     }
     #display-login-form {
         display:none;
+    }
+
+    /*Match Card*/
+    .matchcard {
+        display: flex;
+        flex-direction: column;
+        background-color: #ebebeb;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: 10% ;
+        width: 80%;
+        margin-right: 10%;
+        padding: 15px 15px 15px 15px;
+        font-size: 24px;
+    }
+    .team-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 60%;
     }
 
 }

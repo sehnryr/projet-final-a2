@@ -3,23 +3,28 @@
     <head>
         <meta charset="utf-8">
         <title>Matchmaking</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Paytone+One&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="public_html/css/style.css?rnd=132"/>
     </head>
     <body>
-        <nav class="">
+        <nav class="nav-bar">
             <div>
-                <a href="index.html">Matchmaking</a>
+                <a class="nav-bar-title" href="index.html">🏓Matchmaking</a>
             </div>
             <div>
-                <ul>
-                    <il><a href="index.html">Home</a></il>
-                    <il><a href="explore.html">Explore</a></il>
-                    <il><a href="about.html">About</a></il>
-                    <il><a href="login.html">Sign in</a></il>
+                <ul class="nav-link-list">
+                    <li class="nav-link-list"><strong><a class="nav-link-activated" href="index.html">Home</a></strong></li>
+                    <li class="nav-link-list"><a href="explore.html">Explore</a></li>
+                    <li class="nav-link-list"><a href="about.html">About</a></li>
+                    <li class="nav-link-list"><a id="nav-login-button" href="login.html">Sign in</a></li>
                 </ul>
-            </div>    
+            </div>
         </nav>
         <main>
-            <h1>My Profile</h1>
+            <section>
+                <h1>My Profile</h1>
             <div class="profile">
                 
                 <div class="profile-picture">
@@ -50,13 +55,15 @@
                     </div>
                 </div>
             </div>
-            <h1>My sports</h1>
+            </section>
+            <section>
+                h1>My sports</h1>
             <div id="profile-sports-list">
                 
             </div>
             <h1>My match(player)</h1>
             <div id="profile-match-list">
-                <div class="matchCard">
+                <div class="matchcard">
                     <div id="match-date">June 25 16h00</div>
                     <div class="team-info">
                         <div id="team-1-name">Team 1 name</div>
@@ -68,6 +75,8 @@
                     <button class="green-btn">More info</button>
                 </div>
             </div>
+            </section>
         </main>
+        <script href="public_html/js/user.js"></script>
     </body>
 </html>
