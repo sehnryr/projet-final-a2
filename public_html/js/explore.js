@@ -122,8 +122,21 @@ $('#searchForm').on('submit', (event) => {
     }).done((data) => {
         layerGroup.clearLayers();
         data.forEach(element => {
-            L.marker([element.latitude, element.longitude]).addTo(layerGroup)
-                .bindPopup('<p>' + sports[element.sport_id] + '</p>')
-        });
+            $.ajax("api.php/match", { method: "GET", data: { match_id: element['id'] } }).done((match_data) => {
+                $.ajax('api.php/user', {
+                    method: 'GET',
+                    data: { user_id: match_data.organizer_id }
+                }).done((organizer_data) => {
+                    let participation = match_data['participation'].length + '/' + match_data['max_players']
+
+                    L.marker([match_data.latitude, match_data.longitude]).addTo(layerGroup)
+                        .bindPopup(
+                            '<p>' + sports[match_data.sport_id] + '</p>' +
+                            '<p>' + match_data.datetime + '</p>' +
+                            '<p>Players: ' + participation + '</p>' +
+                            '<p>Organized by: ' + organizer_data.first_name + ' ' + organizer_data.last_name + '</p>')
+                })
+            })
+        })
     })
 })
