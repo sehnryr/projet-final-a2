@@ -1,8 +1,7 @@
 @import "base.css";
 @import "navbar.css";
 
-
-#popup-match-info {
+/* #popup-match-info {
     display:flex;
     flex-direction: column;
 
@@ -13,8 +12,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-}
-
+} */
+/* 
 .yellow-btn {
     padding: 0.7rem 0.7rem 0.7rem 0.7rem;
     text-decoration: none;
@@ -33,12 +32,13 @@
 .yellow-btn:hover {
     transition-duration: 400ms;
     opacity: 75%;
-}
+} */
 
 #explore-section {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: calc(100vh - 60px);
 }
 
 /*
@@ -49,7 +49,7 @@
 
 #map {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     /*margin: 0;
     margin-left: 10%;
     padding: 0;
@@ -57,7 +57,7 @@
     */
     /*left: 30%;*/
   }
-  #sidebar {
+  /* #sidebar {
     width: 30%;
     height: 100vh;
     position: absolute;
@@ -66,7 +66,7 @@
     border: lightblue;
     border-style: solid;
     border-width: 2px;
-  }
+  } */
   /*
   .sidebarElement {
     padding: 6px;
@@ -88,18 +88,19 @@
 #searchForm {
     background-color: #fff;
     border-radius: 5px;
-    width: 40%;
-    max-width: 80%;
+    /* width: 40%; */
+    /* max-width: 80%; */
     position: absolute;
     top: 70px;
     left: 50px;
     z-index: 1000;
     padding: 3px;
 }
-#searchForm button {
+
+/* #searchForm button {
     background-color: #fff;
     border-radius: 0px;
     border-style: solid;
     border-color: #ebebeb;
     border-width: 1px;
-}
+} */
