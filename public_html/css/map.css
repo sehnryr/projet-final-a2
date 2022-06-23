@@ -1,3 +1,85 @@
+/*@import "base.css";
+@import "navbar.css";
+
+*/
+#popup-match-info {
+    display:flex;
+    flex-direction: column;
+
+}
+
+.popopupup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.yellow-btn {
+    padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+    text-decoration: none;
+    background-color: #F8C141;
+    color: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-weight: 900;
+    font-size: 36px;
+    width: 215px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.yellow-btn:hover {
+    transition-duration: 400ms;
+    opacity: 75%;
+}
+
+#explore-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/*
 #map {
     height: 100vh;
 }
+*/
+
+#map {
+    width: 70%;
+    height: 100vh;
+    /*margin: 0;
+    margin-left: 10%;
+    padding: 0;
+
+    */
+    /*left: 30%;*/
+  }
+  #sidebar {
+    width: 30%;
+    height: 100vh;
+    left: 0%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: lightblue;
+    border-style: solid;
+    border-width: 2px;
+  }
+  /*
+  .sidebarElement {
+    padding: 6px;
+    display: table;
+    width: 95%;
+  }
+  .infoSidebarElement {
+    display: table-cell;
+    cursor: pointer;
+    width: 90%;
+  }
+  .removeSidebarElement {
+    display: table-cell;
+    text-align: right;
+    cursor: pointer;
+  }
+  */
