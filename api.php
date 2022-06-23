@@ -384,8 +384,8 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             isset($organizer_id) ? $organizer_id : null,
             isset($range) ? $range : null,
             isset($city_id) ? $city_id : null,
-            isset($date) ? $date : null,
-            isset($sport_id) ? $sport_id : null
+            isset($sport_id) ? $sport_id : null,
+            isset($date) ? $date : null
         );
 
         sendResponse(
