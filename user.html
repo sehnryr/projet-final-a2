@@ -14,16 +14,22 @@
 				<li><a href="index.html">Home</a></li>
 				<li><a href="explore.html">Explore</a></li>
 				<li><a href="about.html">About</a></li>
-				<li class="nav-active"><a href="login.html">Sign in</a></li>
+				<li class="nav-active"><a href="#" id="disconnect">Disconnect</a></li>
 			</ul>
 		</nav>
 		<main>
 			<section></section>
 			<section>
 				<h2>Profile</h2>
-				<img id="pictureProfile" src="public_html/img/no-user.png" alt="Profile picture" width="150" height="150" />
-				<form>
-					<input id="idProfile" value="0" hidden />
+				<img
+					id="pictureProfile"
+					src="public_html/img/no-user.png"
+					alt="Profile picture"
+					width="150"
+					height="150"
+				/>
+				<form id="formProfile">
+					<input id="idProfile" value="0" hidden disabled />
 					<label for="firstnameProfile">Firstname:</label>
 					<input id="firstnameProfile" placeholder="Firstname" value="John" disabled />
 					<label for="lastnameProfile">Lastname:</label>
@@ -34,62 +40,9 @@
 					<input id="phoneNumberProfile" placeholder="Phone number" value="0123456789" disabled />
 					<label for="birthdateProfile">Birthdate:</label>
 					<input id="birthdateProfile" type="date" placeholder="Birthdate" value="2000-01-01" disabled />
-					<button>Edit</button>
+					<button type="submit">Edit</button>
 				</form>
 			</section>
-			<!-- <section>
-                <h1>My Profile</h1>
-            <div class="profile">
-                
-                <div class="profile-picture">
-                    
-                </div>
-                <div>
-                    <div class="profile-info">
-                        <div>
-                            <div id="profile-name"></div>
-                            <button id="modifie-profile-name" class="modification-button"></button>
-                        </div>
-                        <div>
-                            <div id="profile-age" ></div>
-                            <button id="modifie-profile-age" class="modification-button"></button>
-                        </div>
-                        <div>
-                            <div id="profile-email" ></div>
-                            <button id="modifie-profile-email" class="modification-button"></button>
-                        </div>
-                        <div>
-                            <div id="profile-phone" ></div>
-                            <button id="modifie-profile-phone" class="modification-button"></button>
-                        </div>
-                        <div>
-                            <div id="profile-city"></div>
-                            <button id="modifie-profile-city" class="modification-button"></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </section>
-            <section>
-                h1>My sports</h1>
-            <div id="profile-sports-list">
-                
-            </div>
-            <h1>My match(player)</h1>
-            <div id="profile-match-list">
-                <div class="matchcard">
-                    <div id="match-date">June 25 16h00</div>
-                    <div class="team-info">
-                        <div id="team-1-name">Team 1 name</div>
-                        <div id="team-2-name">Team 2 name</div>
-                    </div>
-                    <div><img src="public_html/img/Pin Football.png" /></div>
-                    <div id="city-name">Nantes</div>
-                    <div id="player-number">Registered player: 15/22</div>
-                    <button class="green-btn">More info</button>
-                </div>
-            </div>
-            </section> -->
 		</main>
 		<script href="public_html/js/user.js"></script>
 	</body>

@@ -27,3 +27,37 @@ $(() => {
         window.location.href = url
     }
 })
+
+$('#disconnect').on('click', (event) => {
+    let cookie = getCookie('matchmaking_session')
+    $.ajax("api.php/logout", {
+        method: "GET", headers: {
+            Authorization: 'Bearer ' + cookie
+        }
+    })
+    deleteCookie('matchmaking_session')
+    let url = window.location.href.replace(/user\.html.*/i, 'login.html')
+    window.location.href = url
+})
+
+$('#formProfile').on('submit', (event) => {
+    let cookie = getCookie('matchmaking_session')
+    event.preventDefault()
+    if ($('#idProfile').attr('disabled') != undefined) {
+        $('input').removeAttr('disabled')
+    } else {
+        $.ajax('api.php/profile', {
+            method: "PUT", headers: {
+                Authorization: 'Bearer ' + cookie
+            }, data: {
+                first_name: $("#firstnameProfile").val(),
+                last_name: $("#lastnameProfile").val(),
+                email: $("#emailProfile").val(),
+                phone_number: $("#phoneNumberProfile").val(),
+                birthdate: $("#birthdateProfile").val()
+            }
+        }).done((_) => {
+            $('input').prop('disabled', true);
+        })
+    }
+})

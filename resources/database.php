@@ -379,7 +379,7 @@ class Database
         $email = strtolower($email ?? $data['email']);
         $phone_number = $phone_number ?? $data['phone_number'];
         $profile_picture_url = $profile_picture_url ?? $data['profile_picture_url'];
-        $birthdate = $birthdate ?? $data['birthdate'];
+        $birthdate = ($birthdate ?? $data['birthdate'])->format('Y-m-d H:i:s');
 
         if (
             !filter_var($email, FILTER_VALIDATE_EMAIL) ||
