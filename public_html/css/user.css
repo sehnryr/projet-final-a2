@@ -1,0 +1,36 @@
+@import "base.css";
+@import "navbar.css";
+
+main {
+	display: flex;
+	flex-direction: row;
+	width: 100vw;
+}
+
+main > section:first-of-type {
+	flex-grow: 2;
+}
+
+main > section:last-of-type {
+	flex-grow: 1;
+	display: flex;
+	
+}
+
+main > section:last-of-type > img {
+	box-sizing: border-box;
+	border-style: solid;
+	border-color: gray;
+	border-width: 5px;
+	border-radius: 75px;
+}
+
+main > section:last-of-type > input {
+	font-size: 1rem;
+}
+
+main > section:last-of-type > input:disabled {
+	width: fit-content;
+	color: black;
+	border-style: hidden;
+}
