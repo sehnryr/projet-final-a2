@@ -73,6 +73,43 @@ var sports = {
     6: 'Rugby'
 }
 
+function loadPins(data = { range: 30 }) {
+    $.ajax('api.php/matches', {
+        method: 'GET',
+        data: data
+    }).done((data) => {
+        layerGroup.clearLayers();
+        data.forEach(element => {
+            $.ajax("api.php/match", { method: "GET", data: { match_id: element['id'] } }).done((match_data) => {
+                $.ajax('api.php/user', {
+                    method: 'GET',
+                    data: { user_id: match_data.organizer_id }
+                }).done((organizer_data) => {
+                    let participation = match_data['participation'].length + '/' + match_data['max_players']
+
+                    let participant = "Players: " + participation + "\\n"
+                    match_data.participation.forEach(element => {
+                        participant += "    " + element.first_name + " "
+                            + element.last_name + " " + element.validation + "\\n"
+                    })
+
+                    L.marker([match_data.latitude, match_data.longitude]).addTo(layerGroup)
+                        .bindPopup(
+                            '<p>' + sports[match_data.sport_id] + '</p>' +
+                            '<p>' + match_data.datetime + '</p>' +
+                            '<p>Fee: ' + match_data.price + '€</p>' +
+                            '<p>Players: ' + participation + '</p>' +
+                            '<p>Organized by: ' + organizer_data.first_name + ' ' + organizer_data.last_name + '</p>' +
+                            '<button onclick="alert(&quot;' +
+                            sports[match_data.sport_id] + "\\n" +
+                            participant
+                            + '&quot;)">Infos</button>')
+                })
+            })
+        })
+    })
+}
+
 $(() => {
     var map = L.map("map", {
         center: [48.85341, 2.3488], //Centered on Paris by default
@@ -86,18 +123,7 @@ $(() => {
     // L.marker([47.21725, -1.55336]).addTo(map).bindPopup("<b>Hello world!</b><br>I am a popup.")
     layerGroup = L.layerGroup().addTo(map);
 
-    $.ajax('api.php/matches', {
-        method: 'GET',
-        data: {
-            range: 30
-        }
-    }).done((data) => {
-        layerGroup.clearLayers();
-        data.forEach(element => {
-            L.marker([element.latitude, element.longitude]).addTo(layerGroup)
-                .bindPopup('<p>' + sports[element.sport_id] + '</p>')
-        });
-    })
+    loadPins();
 })
 
 $('#searchForm').on('submit', (event) => {
@@ -121,27 +147,5 @@ $('#searchForm').on('submit', (event) => {
         data['sport_id'] = sport_id
     }
 
-    $.ajax('api.php/matches', {
-        method: 'GET',
-        data: data
-    }).done((data) => {
-        layerGroup.clearLayers();
-        data.forEach(element => {
-            $.ajax("api.php/match", { method: "GET", data: { match_id: element['id'] } }).done((match_data) => {
-                $.ajax('api.php/user', {
-                    method: 'GET',
-                    data: { user_id: match_data.organizer_id }
-                }).done((organizer_data) => {
-                    let participation = match_data['participation'].length + '/' + match_data['max_players']
-
-                    L.marker([match_data.latitude, match_data.longitude]).addTo(layerGroup)
-                        .bindPopup(
-                            '<p>' + sports[match_data.sport_id] + '</p>' +
-                            '<p>' + match_data.datetime + '</p>' +
-                            '<p>Players: ' + participation + '</p>' +
-                            '<p>Organized by: ' + organizer_data.first_name + ' ' + organizer_data.last_name + '</p>')
-                })
-            })
-        })
-    })
+    loadPins(data);
 })

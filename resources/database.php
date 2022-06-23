@@ -736,8 +736,10 @@ class Database
 
         $data = (array)$result;
 
-        $request = 'SELECT * FROM "participation"
-                        WHERE "match_id" = :match_id';
+        $request = 'SELECT p."id", p."user_id", p."team_id", p."validation", p."score", u."first_name", u."last_name"
+                        FROM "participation" p
+                        LEFT JOIN "user" u ON p."user_id" = u."id"
+                        WHERE p."match_id" = :match_id';
 
         $statement = $this->PDO->prepare($request);
         $statement->bindParam(':match_id', $match_id);
