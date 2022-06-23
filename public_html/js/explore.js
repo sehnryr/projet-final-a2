@@ -116,6 +116,11 @@ $('#searchForm').on('submit', (event) => {
         data['date'] = date
     }
 
+    let sport_id = $('#select-sport').val()
+    if (sport_id.length > 0) {
+        data['sport_id'] = sport_id
+    }
+
     $.ajax('api.php/matches', {
         method: 'GET',
         data: data
