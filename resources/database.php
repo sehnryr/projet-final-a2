@@ -700,8 +700,6 @@ class Database
                 date('Y-m-d H:i:s', strtotime('+' . $range . ' day', time())) . '\'';
         }
 
-        var_dump($request);
-
         $statement = $this->PDO->prepare($request);
 
         foreach ($list as $key => $value) {
