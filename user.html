@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Matchmaking</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="public_html/css/user.css" />
 		<script type="module" src="public_html/js/user.js" defer></script>
 	</head>
@@ -20,9 +21,21 @@
 			<section></section>
 			<section>
 				<h2>Profile</h2>
-				<img src="public_html/img/no-user.png" alt="Profile picture" width="150" height="150" />
-				<label for="firstnameProfile">Firstname:</label>
-				<input id="firstnameProfile" placeholder="Firstname" value="John" disabled />
+				<img id="pictureProfile" src="public_html/img/no-user.png" alt="Profile picture" width="150" height="150" />
+				<form>
+					<input id="idProfile" value="0" hidden />
+					<label for="firstnameProfile">Firstname:</label>
+					<input id="firstnameProfile" placeholder="Firstname" value="John" disabled />
+					<label for="lastnameProfile">Lastname:</label>
+					<input id="lastnameProfile" placeholder="Lastname" value="Doe" disabled />
+					<label for="emailProfile">Email:</label>
+					<input id="emailProfile" placeholder="Email" value="john.doe@example.com" disabled />
+					<label for="phoneNumberProfile">Phone number:</label>
+					<input id="phoneNumberProfile" placeholder="Phone number" value="0123456789" disabled />
+					<label for="birthdateProfile">Birthdate:</label>
+					<input id="birthdateProfile" type="date" placeholder="Birthdate" value="2000-01-01" disabled />
+					<button>Edit</button>
+				</form>
 			</section>
 			<!-- <section>
                 <h1>My Profile</h1>
