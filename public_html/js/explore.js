@@ -1,6 +1,18 @@
 import { createCookie, getCookie } from './utils.js'
 
+$("#match-add-info").on("submit",(event) =>{
+    let current_match = $("#popup-match-id").val()
+    $.ajax("api.php/sport", {
+        
+    })
+});
+/*
+$.ajax("api.php/sport", {
+
+})
+*/
 //Fill select with the list of each sport
+/*
 $.ajax("api.php/sport", {
     method: "GET"
 }).done((data) => {
@@ -12,7 +24,6 @@ $.ajax("api.php/sport", {
 $(() => {
     let cookie = getCookie('mm_session')
     if(cookie.lenght > 0) {
-        //
         $("#searchForm").on("submit", (event) =>{
             event.preventDefault()
             $.ajax("api.php/match", {
@@ -50,4 +61,4 @@ $(() => {
         })
     }
 })
-
+*/
