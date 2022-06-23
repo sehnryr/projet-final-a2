@@ -658,12 +658,14 @@ class Database
      * @param ?int $organizer_id
      * @param ?int $range
      * @param ?int $city_id
+     * @param ?int $sport_id
      * @param ?DateTime $datetime
      */
     public function getMatches(
         ?int $organizer_id = null,
         ?int $range = null,
         ?int $city_id = null,
+        ?int $sport_id = null,
         ?DateTime $datetime = null
     ): array {
         $request = 'SELECT * FROM "match" ';
@@ -678,6 +680,9 @@ class Database
         }
         if ($datetime != null) {
             $list['datetime'] = $datetime->format('Y-m-d H:i:s');
+        }
+        if ($sport_id != null) {
+            $list['sport_id'] = $sport_id;
         }
 
         if (count($list) > 0) {

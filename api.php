@@ -378,12 +378,14 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
         $range = $_GET['range'];
         $city_id = $_GET['city_id'];
         $date = $_GET['date'];
+        $sport_id = $_GET['sport_id'];
 
         $data = $db->getMatches(
             isset($organizer_id) ? $organizer_id : null,
             isset($range) ? $range : null,
             isset($city_id) ? $city_id : null,
-            isset($date) ? $date : null
+            isset($date) ? $date : null,
+            isset($sport_id) ? $sport_id : null
         );
 
         sendResponse(
