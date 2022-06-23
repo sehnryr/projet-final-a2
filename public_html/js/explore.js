@@ -35,27 +35,27 @@ $(() => {
                 }
             })
         })
-        $("#date-7").on("click",(event)=>{
+        $("#date-7").on("click", (event) => {
             event.preventDefault()
             $.ajax("api.php/match", {
                 method: "GET", data: {
-            
+
                 }
             })
         })
-        $("#date-15").on("click",(event)=>{
+        $("#date-15").on("click", (event) => {
             event.preventDefault()
             $.ajax("api.php/match", {
                 method: "GET", data: {
-            
+
                 }
             })
         })
-        $("#date-30").on("click",(event)=>{
+        $("#date-30").on("click", (event) => {
             event.preventDefault()
             $.ajax("api.php/match", {
                 method: "GET", data: {
-            
+
                 }
             })
         })

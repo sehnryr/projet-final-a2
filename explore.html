@@ -1,94 +1,75 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Matchmaking</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Paytone+One&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="public_html/css/style.css?rnd=132"/>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
-        <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
-        <link rel="stylesheet" href="public_html/css/map.css?">
-    </head>
-    <body>
-        <nav class="nav-bar">
-            <div>
-                <a class="nav-bar-title" href="index.html">🏓Matchmaking</a>
-            </div>
-            <div>
-                <ul class="nav-link-list">
-                    <li class="nav-link-list"><strong><a class="nav-link-activated" href="index.html">Home</a></strong></li>
-                    <li class="nav-link-list"><a href="explore.html">Explore</a></li>
-                    <li class="nav-link-list"><a href="about.html">About</a></li>
-                    <li class="nav-link-list"><a id="nav-login-button" href="login.html">Sign in</a></li>
-                </ul>
-            </div>
-        </nav>
-        <form id="searchForm">
-            <input
-                id="search_place"
-                name="search_place"
-                type="text"
-                placeholder="City"
-            />
-            <input
-                id="match_date"
-                name="match_date"
-                type="date"
-            />
-            <select if="select-sport" name="select-sport">
-                <option value="football">Football</option>
-                <option value="basketball">Basketball</option>
-                <option value="ping_pong">Ping Pong</option>
-                <option value="volleyball">Volleyball</option>
-                <option value="badminton">Badminton</option>
-                <option value="rugby">Rugby</option>
-            </select>
-            <select id="recommended_level" name="recommended_level">
-                <option value="beginner">
-                    Beginner
-                </option>
-                <option value="intermediate">
-                    Intermediate
-                </option>
-                <option value="advanced">
-                    Advanced
-                </option>
-                <option value="master">
-                    Master
-                </option>
-                <option value="professional">
-                    professional
-                </option>
-            </select>
-            <button type="button" id="date-7" name="date-7">+7</button>
-            <button type="button" id="date-15" name="date-15">+15</button>
-            <button type="button" id="date-30" name="date-30">+30</button>
-            <button type ="submit" name="searchMatch">Search</button>
-        </form>
-        <div id="explore-section">
-            <div id="sidebar">
-            </div>
-            <div id="map"></div>
-        </div>
-        
-        <script>
-            var map = L.map('map', {
-                center: [48.85341, 2.3488], //Centered on Paris by default
-                zoom: 8
-            });
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { //Add the openstreetmap tile layer to the map
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            }).addTo(map);
+	<head>
+		<meta charset="utf-8" />
+		<title>Matchmaking</title>
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+			integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+			crossorigin=""
+		/>
+		<script
+			src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+			integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+			crossorigin=""
+		></script>
+		<link rel="stylesheet" href="public_html/css/map.css?" />
+		<script type="module" href="public_html/js/explore.js" defer></script>
+	</head>
+	<body>
+		<nav>
+			<h1><a href="index.html">🏓 Matchmaking</a></h1>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li class="nav-active"><a href="explore.html">Explore</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="user.html">Sign in</a></li>
+			</ul>
+		</nav>
+		<form id="searchForm">
+			<input id="search_place" name="search_place" type="text" placeholder="City" />
+			<input id="match_date" name="match_date" type="date" />
+			<select if="select-sport" name="select-sport">
+				<option value="football">Football</option>
+				<option value="basketball">Basketball</option>
+				<option value="ping_pong">Ping Pong</option>
+				<option value="volleyball">Volleyball</option>
+				<option value="badminton">Badminton</option>
+				<option value="rugby">Rugby</option>
+			</select>
+			<select id="recommended_level" name="recommended_level">
+				<option value="beginner">Beginner</option>
+				<option value="intermediate">Intermediate</option>
+				<option value="advanced">Advanced</option>
+				<option value="master">Master</option>
+				<option value="professional">professional</option>
+			</select>
+			<button type="button" id="date-7" name="date-7">+7</button>
+			<button type="button" id="date-15" name="date-15">+15</button>
+			<button type="button" id="date-30" name="date-30">+30</button>
+			<button type="submit" name="searchMatch">Search</button>
+		</form>
+		<div id="explore-section">
+			<div id="sidebar"></div>
+			<div id="map"></div>
+		</div>
+		<script>
+			var map = L.map("map", {
+				center: [48.85341, 2.3488], //Centered on Paris by default
+				zoom: 8,
+			})
+			L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+				//Add the openstreetmap tile layer to the map
+				maxZoom: 19,
+			}).addTo(map)
 
-            var marker_2 = L.marker([47.21725, -1.55336]).addTo(map); // add a marker to the map
-            //var marker_2 = L.marker([48.85341, 2.3488]).addTo(map); // add a marker to the map
-            marker_2.bindPopup("<b>Hello world!</b><br>I am a popup."); //bind popup on a marker
+			var marker_2 = L.marker([47.21725, -1.55336]).addTo(map) // add a marker to the map
+			//var marker_2 = L.marker([48.85341, 2.3488]).addTo(map); // add a marker to the map
+			marker_2.bindPopup("<b>Hello world!</b><br>I am a popup.") //bind popup on a marker
 
-            //Icon class
-            /*
+			//Icon class
+			/*
             var SportIcon = L.Icon.extend({
                 options: {
                 iconSize:     [73, 100], //size of the icon
@@ -98,47 +79,49 @@
             });
             
             var basketballIcon = new SportIcon({iconUrl: "https://github.com/sehnryr/projet-final-a2/blob/cdd27534723beabb913e7350637c2fbfd8c85d33/public_html/img/basketballIcon.png"}); //initialize new icon icon
-
+            
             L.marker([48.85341, 2.3488], {icon: basketballIcon}).addTo(map).bindPopup("BasketBall Match 🏀");;
             */
-            const basketIcon = L.icon({
-                iconUrl: 'public_html/img/basketballIcon.png',
-                iconSize: [37, 50],
-                iconAnchor:   [18, 48], //point of the icon which will correspond to marker's location
-            });
-            const footIcon = L.icon({
-                iconUrl: 'public_html/img/basketballIcon.png',
-                iconSize: [37, 50],
-                iconAnchor:   [18, 48], //point of the icon which will correspond to marker's location
-            });
-            const pingpongIcon = L.icon({
-                iconUrl: 'public_html/img/basketballIcon.png',
-                iconSize: [37, 50],
-                iconAnchor:   [18, 48], //point of the icon which will correspond to marker's location
-            });
-            const rugbyIcon = L.icon({
-                iconUrl: 'public_html/img/basketballIcon.png',
-                iconSize: [37, 50],
-                iconAnchor:   [18, 48], //point of the icon which will correspond to marker's location
-            });
-            const volleyIcon = L.icon({
-                iconUrl: 'public_html/img/basketballIcon.png',
-                iconSize: [37, 50],
-                iconAnchor:   [18, 48], //point of the icon which will correspond to marker's location
-            });
-            const badmintonIcon = L.icon({
-                iconUrl: 'public_html/img/basketballIcon.png',
-                iconSize: [37, 50],
-                iconAnchor:   [18, 48], //point of the icon which will correspond to marker's location
-            });
+			const basketIcon = L.icon({
+				iconUrl: "public_html/img/basketballIcon.png",
+				iconSize: [37, 50],
+				iconAnchor: [18, 48], //point of the icon which will correspond to marker's location
+			})
+			const footIcon = L.icon({
+				iconUrl: "public_html/img/basketballIcon.png",
+				iconSize: [37, 50],
+				iconAnchor: [18, 48], //point of the icon which will correspond to marker's location
+			})
+			const pingpongIcon = L.icon({
+				iconUrl: "public_html/img/basketballIcon.png",
+				iconSize: [37, 50],
+				iconAnchor: [18, 48], //point of the icon which will correspond to marker's location
+			})
+			const rugbyIcon = L.icon({
+				iconUrl: "public_html/img/basketballIcon.png",
+				iconSize: [37, 50],
+				iconAnchor: [18, 48], //point of the icon which will correspond to marker's location
+			})
+			const volleyIcon = L.icon({
+				iconUrl: "public_html/img/basketballIcon.png",
+				iconSize: [37, 50],
+				iconAnchor: [18, 48], //point of the icon which will correspond to marker's location
+			})
+			const badmintonIcon = L.icon({
+				iconUrl: "public_html/img/basketballIcon.png",
+				iconSize: [37, 50],
+				iconAnchor: [18, 48], //point of the icon which will correspond to marker's location
+			})
 
-            var marker = L.marker([48.85341, 2.3488], {icon: basketIcon}).addTo(map).bindPopup('<div id="popup-match-info"><div class="popopupup"><h2 id="popup-sport">Basketball</h2><div id="popup-date">June 25 16h00</div></div><hr><div id="popup-player-nbr">Registered player: 15/22</div><div id="popup-player-lvl"> Level : Advanced</div><div id="popup-match-fee">Fee: 3€</div><div class="popopupup"><button class="yellow-btn" id="match-add-info">INFOS</button><button class="green-btn" id="popup-join-match">JOIN</button></div></div>');
-            var markers = array();
-            markers.push(marker);
-            
-            markers.on('click', function(evt) {
-            });
-        </script>
-        <script href="public_html/js/explore.js"></script>
-    </body>
+			var marker = L.marker([48.85341, 2.3488], { icon: basketIcon })
+				.addTo(map)
+				.bindPopup(
+					'<div id="popup-match-info"><div class="popopupup"><h2 id="popup-sport">Basketball</h2><div id="popup-date">June 25 16h00</div></div><hr><div id="popup-player-nbr">Registered player: 15/22</div><div id="popup-player-lvl"> Level : Advanced</div><div id="popup-match-fee">Fee: 3€</div><div class="popopupup"><button class="yellow-btn" id="match-add-info">INFOS</button><button class="green-btn" id="popup-join-match">JOIN</button></div></div>'
+				)
+			var markers = []
+			markers.push(marker)
+
+			markers.on("click", function (evt) {})
+		</script>
+	</body>
 </html>

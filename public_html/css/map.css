@@ -1,7 +1,7 @@
-/*@import "base.css";
+@import "base.css";
 @import "navbar.css";
 
-*/
+
 #popup-match-info {
     display:flex;
     flex-direction: column;
@@ -48,7 +48,7 @@
 */
 
 #map {
-    width: 70%;
+    width: 100vw;
     height: 100vh;
     /*margin: 0;
     margin-left: 10%;
@@ -60,7 +60,8 @@
   #sidebar {
     width: 30%;
     height: 100vh;
-    left: 0%;
+    position: absolute;
+    left: 0;
     background-color: rgba(255, 255, 255, 0.8);
     border: lightblue;
     border-style: solid;
@@ -83,3 +84,22 @@
     cursor: pointer;
   }
   */
+
+#searchForm {
+    background-color: #fff;
+    border-radius: 5px;
+    width: 40%;
+    max-width: 80%;
+    position: absolute;
+    top: 70px;
+    left: 50px;
+    z-index: 1000;
+    padding: 3px;
+}
+#searchForm button {
+    background-color: #fff;
+    border-radius: 0px;
+    border-style: solid;
+    border-color: #ebebeb;
+    border-width: 1px;
+}
