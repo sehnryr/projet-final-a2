@@ -22,5 +22,8 @@ $(() => {
             $("#birthdateProfile").val(data['birthdate'])
             $("#pictureProfile").attr('src', data['profile_picture_url'] ?? 'public_html/img/no-user.png')
         })
+    } else {
+        let url = window.location.href.replace(/user\.html.*/i, 'login.html')
+        window.location.href = url
     }
 })
