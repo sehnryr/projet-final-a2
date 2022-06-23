@@ -373,6 +373,23 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
                 (int)$sport_id
             )
         );
+    case 'matches' . HTTPRequestMethods::GET:
+        $organizer_id = $_GET['organizer_id'];
+        $range = $_GET['range'];
+        $city_id = $_GET['city_id'];
+        $date = $_GET['date'];
+
+        $data = $db->getMatches(
+            isset($organizer_id) ? $organizer_id : null,
+            isset($range) ? $range : null,
+            isset($city_id) ? $city_id : null,
+            isset($date) ? $date : null
+        );
+
+        sendResponse(
+            HTTPResponseCodes::Success,
+            $data
+        );
     case 'match' . HTTPRequestMethods::GET:
         $match_id = $_GET['match_id'];
 

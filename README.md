@@ -43,6 +43,7 @@ pip3 install unidecode faker
 | ![GET][GET] | /user_level | `user_id`, `sport_id` || Get the user' level whose id is `user_id` if Authorization header is valid. |
 | ![POST][POST] | /user_level | `sport_id`, `level`, `description` | Authorization: Bearer <access_token> | Create one' level in one sport which id is `sport_id` if Authorization header is valid. |
 | ![PUT][PUT] | /user_level | `sport_id`, [`level`, `description`] | Authorization: Bearer <access_token> | Edit one' level in one sport which id is `sport_id` if Authorization header is valid. |
+| ![GET][GET] | /matches | [`organizer_id`, `range`, `city_id`, `date`] || Get all the matches with the ability to filter them. |
 | ![GET][GET] | /match | `match_id` || Get the match whose id is `match_id`. |
 | ![POST][POST] | /match | `sport_id`, `latitude`, `longitude`, `max_players`, `min_players`, `duration`, `datetime`, `description`, `recommended_level`, [`price`] | Authorization: Bearer <access_token> | Create a match with the specified parameters if Authorization header is set. |
 | ![PUT][PUT] | /match | `match_id`, [`sport_id`, `latitude`, `longitude`, `max_players`, `min_players`, `duration`, `datetime`, `description`, `recommended_level`, `price`] | Authorization: Bearer <access_token> | Edit a match with the specified parameters if Authorization header matches the organizer of the match. |

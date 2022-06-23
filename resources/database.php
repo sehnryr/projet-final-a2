@@ -653,6 +653,69 @@ class Database
     }
 
     /**
+     * Get all the matches.
+     * 
+     * @param ?int $organizer_id
+     * @param ?int $range
+     * @param ?int $city_id
+     * @param ?DateTime $datetime
+     */
+    public function getMatches(
+        ?int $organizer_id = null,
+        ?int $range = null,
+        ?int $city_id = null,
+        ?DateTime $datetime = null
+    ): array {
+        $request = 'SELECT * FROM "match" ';
+
+        $list = array();
+
+        if ($organizer_id != null) {
+            $list['organizer_id'] = $organizer_id;
+        }
+        if ($city_id != null) {
+            $list['city_id'] = $city_id;
+        }
+        if ($datetime != null) {
+            $list['datetime'] = $datetime->format('Y-m-d H:i:s');
+        }
+
+        if (count($list) > 0) {
+            $request .= 'WHERE ';
+
+            $i = count($list) - 1;
+            foreach ($list as $key => $_) {
+                $request .= $key . ' = :' . $key;
+                if ($i > 0) {
+                    $request .= ' AND ';
+                    $i--;
+                }
+            }
+        }
+
+        if ($range != null) {
+            $request .= count($list) > 0 ? ' AND ' : ' WHERE ';
+
+            $request .= ' datetime BETWEEN \'' . date('Y-m-d H:i:s') . '\' AND \'' .
+                date('Y-m-d H:i:s', strtotime('+' . $range . ' day', time())) . '\'';
+        }
+
+        var_dump($request);
+
+        $statement = $this->PDO->prepare($request);
+
+        foreach ($list as $key => $value) {
+            $statement->bindParam(':' . $key, $value);
+        }
+
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
+        return (array) $result;
+    }
+
+    /**
      * Get a match info.
      * 
      * @param int $match_id
