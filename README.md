@@ -1,3 +1,23 @@
+# Matchmaking
+
+Connect with others with sport.
+
+## Connect to the VM
+
+```
+IP: 10.10.51.66
+user: user1
+password: BonnesVacances
+```
+
+## Languages & Frameworks
+
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+
+![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?style=for-the-badge&logo=jquery&logoColor=white)
+
 ## Setup database and fill with sample data
 
 First, make sure the database `matchmaking` is created.
@@ -27,6 +47,9 @@ pip3 install unidecode faker
 *NOTE: Are noted between brackets [] parameters that are optional.*
 
 *NOTE: Parameters have the priority on the authorization header.*
+
+<details>
+<summary>List of endpoints:</summary>
 
 | Method | Endpoint | Parameters | Headers | Description |
 | :---: | :---: | :---: | :---: | :---: |
@@ -65,6 +88,8 @@ pip3 install unidecode faker
 | ![POST][POST] | /notification | `user_id`, `message`, [`url`] | Authorization: Bearer <access_token> | Send a notification to a user. Is only applicable if the sender is an organizer and the user participates to one of his matches. |
 | ![DELETE][DELETE] | /notification | `notification_id`| Authorization: Bearer <access_token> | Delete a notification if the user is authenticated. |
 
+
+</details>
 
 [GET]: https://img.shields.io/badge/GET-brightgreen?style=flat
 [POST]: https://img.shields.io/badge/POST-orange?style=flat
