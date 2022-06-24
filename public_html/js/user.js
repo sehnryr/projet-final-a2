@@ -22,6 +22,14 @@ $(() => {
             $("#birthdateProfile").val(data['birthdate'])
             $("#pictureProfile").attr('src', data['profile_picture_url'] ?? 'public_html/img/no-user.png')
         })
+
+        $.ajax('api.php/participations', {
+            method: "GET", headers: {
+                Authorization: 'Bearer ' + cookie
+            }
+        }).done((data) => {
+            $('#list-match').text(JSON.stringify(data))
+        })
     } else {
         let url = window.location.href.replace(/user\.html.*/i, 'login.html')
         window.location.href = url
