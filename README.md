@@ -2,6 +2,21 @@
 
 Connect with others with sport.
 
+## Test accounts
+
+Since every user ban be either a player or an organizer, there is no need to specify the status of the test account.
+
+*Note: every user in the [dataset](sql/datasets/users.csv) has their password set to 1234.*
+
+```
+email: paulinejacquot7685@example.net
+password: 1234
+```
+```
+email: patrickgermain5953@example.com
+password: 1234
+```
+
 ## Connect to the VM
 
 ```
