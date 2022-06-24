@@ -760,7 +760,7 @@ class Database
      * @param int $sport_id
      * @param float $latitude
      * @param float $longitude
-     * @param int $duration in minutes
+     * @param string $duration hour:minute
      * @param DateTime $datetime date_parse
      * @param string $description
      * @param int $recommended_level
@@ -775,7 +775,7 @@ class Database
         int $sport_id,
         float $latitude,
         float $longitude,
-        int $duration,
+        string $duration,
         DateTime $datetime,
         string $description,
         int $recommended_level,
@@ -799,9 +799,8 @@ class Database
                         VALUES (:organizer_id, :sport_id, :latitude, :longitude, :max_players, :min_players, :price, :duration, :datetime, :description, :recommended_level)
                         RETURNING "id"';
 
-        $duration = convertToHoursMins($duration);
+        // $duration = convertToHoursMins($duration);
         $datetime = $datetime->format('Y-m-d H:i:s');
-        var_dump($max_players);
 
         $max_players = $max_players ?? $sport_data['default_max_players'];
         $min_players = $min_players ?? $sport_data['default_min_players'];

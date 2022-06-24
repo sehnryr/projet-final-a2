@@ -58,3 +58,56 @@ $(() => {
         window.location.href = url
     }
 })
+
+$('#newMatchForm').on('submit', (event) => {
+    event.preventDefault()
+    let cookie = getCookie('matchmaking_session')
+
+    let sport_id = $("input[name='new_match_sport']:checked").val()
+    let min_players = $('#min_players').val()
+    let max_players = $('#max_players').val()
+    let price = $('#price').val()
+    let datetime = $('#datetime').val()
+    let duration = $('#duration').val()
+    let description = $('#description').val()
+    let recommended_level = $('#recommended_level').val()
+
+    console.log(duration)
+
+    let address = $('#address').val()
+
+    $.ajax('https://nominatim.openstreetmap.org/search.php', {
+        method: "GET", data: {
+            q: address,
+            format: 'jsonv2'
+        },
+        error: (_) => {
+            alert('Address could not be found.')
+        }
+    }).done((address_data) => {
+        let latitude = address_data[0].lat
+        let longitude = address_data[0].lon
+
+        $.ajax('api.php/match', {
+            method: "POST",
+            headers: {
+                Authorization: 'Bearer ' + cookie
+            },
+            data: {
+                sport_id: sport_id,
+                latitude: latitude,
+                longitude: longitude,
+                duration: duration,
+                datetime: datetime,
+                description: description,
+                recommended_level: recommended_level,
+                max_players: max_players,
+                min_players: min_players,
+                price: price
+            }
+        }).done((_) => {
+            window.location.reload();
+        })
+    })
+
+})

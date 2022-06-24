@@ -22,46 +22,56 @@
 			<form id="newMatchForm">
 				<div>
 					<div>
-						<input id="football" type="radio" name="new_match_sport" value="football" />
+						<input id="football" type="radio" name="new_match_sport" value="1" required />
 						<label for="football">⚽</label>
-						<input id="basketball" type="radio" name="new_match_sport" value="basketball" />
+						<input id="basketball" type="radio" name="new_match_sport" value="2" required />
 						<label for="basketball">🏀</label>
-						<input id="ping_pong" type="radio" name="new_match_sport" value="ping_pong" />
+						<input id="ping_pong" type="radio" name="new_match_sport" value="3" required />
 						<label for="ping_pong">🏓</label>
-						<input id="badminton" type="radio" name="new_match_sport" value="badminton" />
+						<input id="badminton" type="radio" name="new_match_sport" value="4" required />
 						<label for="badminton">🏸</label>
-						<input id="volleyball" type="radio" name="new_match_sport" value="volleyball" />
+						<input id="volleyball" type="radio" name="new_match_sport" value="5" required />
 						<label for="volleyball">🏐</label>
-						<input id="rugby" type="radio" name="new_match_sport" value="rugby" />
+						<input id="rugby" type="radio" name="new_match_sport" value="6" required />
 						<label for="rugby">🏉</label>
 					</div>
 					<div>
 						<label for="min_players">Minimum number of player</label>
-						<input id="min_players" type="number" name="min_players" placeholder="0" />
+						<input id="min_players" type="number" name="min_players" placeholder="0" required />
 					</div>
 					<div>
 						<label for="max_players">Maximum number of player</label>
-						<input id="max_players" type="number" name="max_players" placeholder="0" />
+						<input id="max_players" type="number" name="max_players" placeholder="0" required />
 					</div>
 					<div>
 						<label for="price">Inscription fee</label>
-						<input id="price" type="number" name="price" placeholder="0.00€" />
+						<input id="price" type="number" name="price" placeholder="0.00€" required />
 					</div>
 					<div>
 						<label for="datetime">Match date</label>
-						<input id="datetime" type="datetime-local" name="datetime" />
+						<input id="datetime" type="datetime-local" name="datetime" required />
 					</div>
 					<div>
 						<label for="duration">Match duration</label>
-						<input id="duration" type="time" name="duration" placeholder="2h30" />
+						<input id="duration" type="time" name="duration" placeholder="2h30" required />
 					</div>
 					<div>
 						<label for="description">Description of the match</label>
-						<input id="description" type="text" name="description" placeholder="Description of the match" />
+						<input
+							id="description"
+							type="text"
+							name="description"
+							placeholder="Description of the match"
+							required
+						/>
+					</div>
+					<div>
+						<label for="address">Address</label>
+						<input id="address" type="text" name="address" placeholder="Address" required />
 					</div>
 					<div>
 						<label for="recommended_level">Recommend a level for this match</label>
-						<select id="recommended_level" name="recommended_level">
+						<select id="recommended_level" name="recommended_level" required>
 							<option value="beginner">Beginner</option>
 							<option value="intermediate">Intermediate</option>
 							<option value="advanced">Advanced</option>

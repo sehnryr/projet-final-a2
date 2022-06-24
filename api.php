@@ -118,7 +118,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'login' . HTTPRequestMethods::POST:
         $email = $_POST['email'];
         $password = $_POST['password'];
-        
+
         // Throw error if the parameters does not exist.
         if (!isset($email) || !isset($password)) {
             APIErrors::invalidRequest();
