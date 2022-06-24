@@ -1061,8 +1061,7 @@ class Database
      * 
      * @param string $access_token
      * @param int $participation_id
-     * @param ?bool $validation
-     * @param ?int $score
+     * @param array $t
      * 
      * @throws AuthenticationException
      * @throws EntryDoesNotExists
@@ -1070,8 +1069,7 @@ class Database
     public function updateParticipation(
         string $access_token,
         int $participation_id,
-        ?bool $validation = null,
-        ?int $score = null
+        array $t
     ): array {
         if (!$this->verifyUserAccessToken($access_token)) {
             throw new AuthenticationException();
@@ -1099,8 +1097,8 @@ class Database
 
         $data = $response;
 
-        $validation = $validation ?? $data['validation'];
-        $score = $score ?? $data['score'];
+        $validation = isset($t['validation']) ? $t['validation'] : $data['validation'];
+        $score = isset($t['score']) ? $t['score'] : $data['score'];
 
         $request = 'UPDATE "participation"
                         SET "validation" = :validation,

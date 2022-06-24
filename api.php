@@ -118,7 +118,7 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
     case 'login' . HTTPRequestMethods::POST:
         $email = $_POST['email'];
         $password = $_POST['password'];
-
+        
         // Throw error if the parameters does not exist.
         if (!isset($email) || !isset($password)) {
             APIErrors::invalidRequest();
@@ -607,13 +607,15 @@ switch ($pathInfo[0] . $_SERVER['REQUEST_METHOD']) {
             APIErrors::invalidRequest();
         }
 
+        $t['validation'] = (bool) $value;
+
         $access_token = getAuthorizationToken();
 
         try {
             $data = $db->updateParticipation(
                 $access_token,
                 (int) $participation_id,
-                validation: (bool) $value,
+                $t,
             );
         } catch (AuthenticationException $_) {
             APIErrors::invalidGrant();
