@@ -2,6 +2,15 @@
 
 Connect with others with sport.
 
+- [🏓 Matchmaking](#-matchmaking)
+	- [Test accounts](#test-accounts)
+	- [Connect to the VM](#connect-to-the-vm)
+	- [Connect to the PostgreSQL database](#connect-to-the-postgresql-database)
+	- [Languages & Tools](#languages-tools)
+	- [Setup database and fill with sample data](#setup-database-and-fill-with-sample-data)
+	- [API](#api)
+	- [Figma](#figma)
+
 ## Test accounts
 
 Since every user ban be either a player or an organizer, there is no need to specify the status of the test account.
